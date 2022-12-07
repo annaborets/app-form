@@ -11,7 +11,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
@@ -35,7 +34,6 @@ import { TrimDirective } from './directives/trim.directive';
     MatNativeDateModule,
     MatIconModule,
     MatCheckboxModule,
-    NgxMaterialTimepickerModule,
     MatSelectModule,
     MatCardModule,
     NgxMaskModule.forRoot(),

@@ -14,6 +14,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { DialogComponent } from './components/dialog/dialog.component';
@@ -37,6 +38,7 @@ import { TrimDirective } from './directives/trim.directive';
     NgxMaterialTimepickerModule,
     MatSelectModule,
     MatCardModule,
+    NgxMaskModule.forRoot(),
   ],
   exports: [HomePageComponent],
 })

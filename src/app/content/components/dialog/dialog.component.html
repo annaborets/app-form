@@ -1,6 +1,6 @@
 <div class="form-wrapper">
     <div mat-dialog-content>
-        <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()" #formDirective="ngForm" class="form">
+        <form [formGroup]="reactiveForm" #formDirective="ngForm" class="form">
             <mat-form-field appearance="fill">
                 <mat-label for="name">Name</mat-label>
                 <input matInput appTrim id="name" formControlName="name">
@@ -11,7 +11,7 @@
             </mat-form-field>
             <mat-form-field appearance="fill" *ngIf="!isChecked">
                 <mat-label for="date">Choose a date</mat-label>
-                <input appTrim matInput [matDatepicker]="picker" id="date" formControlName="date">
+                <input matInput [matDatepicker]="picker" id="date" formControlName="date">
                 <mat-hint *ngIf="reactiveForm.controls['date'].touched ===false">*MM/DD/YYYY</mat-hint>
                 <mat-hint
                     *ngIf="reactiveForm.controls['date'].status ==='INVALID' && reactiveForm.controls['date'].touched ===true">
@@ -29,15 +29,16 @@
                 </mat-select>
             </mat-form-field>
             <section>
-                <mat-checkbox class="example-margin" (change)="onChangeEvent($event)">
+                <mat-checkbox (change)="onChangeEvent($event)">
                     <span *ngIf="!isChecked">Mark to choose time</span>
                     <span *ngIf="isChecked">Unmark to choose date</span>
                 </mat-checkbox>
             </section>
             <mat-form-field appearance="fill">
                 <mat-label for="phone">Phone number</mat-label>
-                <input appTrim matInput id="phone" formControlName="phone">
+                <input appTrim matInput id="phone" formControlName="phone" mask="(000) 000-00-00">
                 <mat-icon matSuffix>phone</mat-icon>
+                <mat-hint *ngIf="reactiveForm.controls['phone'].touched ===false">*0XX XXX XX XX</mat-hint>
                 <mat-hint
                     *ngIf="reactiveForm.controls['phone'].status ==='INVALID' && reactiveForm.controls['phone'].touched ===true">
                     *Invalid number

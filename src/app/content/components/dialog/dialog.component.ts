@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   FormControl,
@@ -15,23 +15,17 @@ import { formData } from '../../models/form-data';
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
 })
-export class DialogComponent implements OnInit {
-  isChecked = false;
-  ranges = [
+export class DialogComponent {
+  public isChecked = false;
+  public ranges = [
     { value: '10 - 12', viewValue: '10 - 12' },
     { value: '12 - 14', viewValue: '12 - 14' },
     { value: '14 - 16', viewValue: '14 - 16' },
     { value: '16 - 18', viewValue: '16 - 18' },
     { value: '18 - 20', viewValue: '18 - 20' },
   ];
-  formData: formData = {
-    name: ' ',
-    date: ' ',
-    phone: ' ',
-    email: ' ',
-    timeRange: ' ',
-  };
-  reactiveForm = new FormGroup({
+  public formData!: formData;
+  public reactiveForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
       Validators.pattern('[a-zA-Z ]*'),
@@ -40,7 +34,7 @@ export class DialogComponent implements OnInit {
     phone: new FormControl('', [
       Validators.required,
       Validators.pattern(
-        /((\+38)?\(?\d{3}\)?[\s\.-]?(\d{7}|\d{3}[\s\.-]\d{2}[\s\.-]\d{2}|\d{3}-\d{4}))/
+        /(\(?\d{3}\)?[\s\.-]?(\d{7}|\d{3}[\s\.-]\d{2}[\s\.-]\d{2}|\d{3}-\d{4}))/
       ),
     ]),
     email: new FormControl('', [
@@ -56,13 +50,25 @@ export class DialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: formData
   ) {}
 
-  ngOnInit(): void {}
-
-  onCloseClick(): void {
+  public onCloseClick(): void {
     this.dialogRef.close();
   }
 
-  dateValidator(): ValidatorFn {
+  public onChangeEvent(event: any) {
+    this.isChecked = event.checked;
+  }
+
+  public onSubmit() {
+    if (this.reactiveForm.invalid) {
+      return;
+    }
+    this.formData = this.reactiveForm.value;
+    this.dialogRef.close({
+      data: this.formData,
+    });
+  }
+
+  private dateValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const today = new Date();
 
@@ -74,21 +80,5 @@ export class DialogComponent implements OnInit {
         ? { invalidDate: 'You cannot use past dates' }
         : null;
     };
-  }
-
-  onChangeEvent(event: any) {
-    this.isChecked = event.checked;
-    console.log(this.isChecked);
-  }
-
-  onSubmit() {
-    if (this.reactiveForm.invalid) {
-      return;
-    }
-    this.formData = this.reactiveForm.value;
-    console.log(this.formData);
-    this.dialogRef.close({
-      data: this.formData,
-    });
   }
 }

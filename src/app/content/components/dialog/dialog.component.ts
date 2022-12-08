@@ -89,21 +89,34 @@ export class DialogComponent {
     }
   }
 
+  private calculateInterval(
+    startHour: number,
+    endHour: number,
+    startMin: number,
+    endMin: number
+  ): number {
+    const interval = (endHour - startHour) * 60 + (endMin - startMin);
+    return interval;
+  }
+
   private checkInterval(string: string): boolean {
     let dateTimeArray = string.split(' ');
     if (dateTimeArray.length <= 2) {
       return false;
     }
     let startTime = dateTimeArray[1];
-    let startHour = startTime.split(':')[0];
-    let startMin = startTime.split(':')[1];
+    let startHour = +startTime.split(':')[0];
+    let startMin = +startTime.split(':')[1];
     let endTime = dateTimeArray[3];
-    let endHour = endTime.split(':')[0];
-    let endMin = endTime.split(':')[1];
+    let endHour = +endTime.split(':')[0];
+    let endMin = +endTime.split(':')[1];
     if (startHour > endHour) {
       return true;
     }
     if (startHour === endHour && startMin >= endMin) {
+      return true;
+    }
+    if (this.calculateInterval(startHour, endHour, startMin, endMin) > 120) {
       return true;
     } else {
       return false;

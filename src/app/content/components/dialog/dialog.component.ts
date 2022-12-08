@@ -17,20 +17,18 @@ import { formData } from '../../models/form-data';
 })
 export class DialogComponent {
   public isChecked = false;
-  public ranges = [
-    { value: '10 - 12', viewValue: '10 - 12' },
-    { value: '12 - 14', viewValue: '12 - 14' },
-    { value: '14 - 16', viewValue: '14 - 16' },
-    { value: '16 - 18', viewValue: '16 - 18' },
-    { value: '18 - 20', viewValue: '18 - 20' },
-  ];
   public formData!: formData;
   public reactiveForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
       Validators.pattern('[a-zA-Z ]*'),
     ]),
-    date: new FormControl('', [Validators.required, this.dateValidator()]),
+    dateAndTime: new FormControl('', [
+      Validators.required,
+      this.dateValidator(),
+      this.timeValidator(),
+      this.intervalValidator(),
+    ]),
     phone: new FormControl('', [
       Validators.required,
       Validators.pattern(
@@ -42,7 +40,6 @@ export class DialogComponent {
       Validators.email,
       Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
     ]),
-    timeRange: new FormControl('', [Validators.required]),
   });
 
   constructor(
@@ -54,11 +51,11 @@ export class DialogComponent {
     this.dialogRef.close();
   }
 
-  public onChangeEvent(event: any) {
+  public onChangeEvent(event: any): void {
     this.isChecked = event.checked;
   }
 
-  public onSubmit() {
+  public onSubmit(): void {
     if (this.reactiveForm.invalid) {
       return;
     }
@@ -68,16 +65,88 @@ export class DialogComponent {
     });
   }
 
-  private dateValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const today = new Date();
+  private checkDate(string: string): boolean {
+    const today = new Date();
+    const date: Date = new Date(string.split(' ')[0]);
+    if (date < today || date.toString() === 'Invalid Date') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
+  private checkTime(string: string, i: number): boolean {
+    const time = string.split(' ')[i];
+    if (!time) {
+      return true;
+    }
+    const hours = +time.split(':')[0];
+    const minutes = +time.split(':')[1];
+    if (hours > 24 || hours < 0 || minutes < 0 || minutes > 59) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private checkInterval(string: string): boolean {
+    let dateTimeArray = string.split(' ');
+    if (dateTimeArray.length <= 2) {
+      return false;
+    }
+    let startTime = dateTimeArray[1];
+    let startHour = startTime.split(':')[0];
+    let startMin = startTime.split(':')[1];
+    let endTime = dateTimeArray[3];
+    let endHour = endTime.split(':')[0];
+    let endMin = endTime.split(':')[1];
+    if (startHour > endHour) {
+      return true;
+    }
+    if (startHour === endHour && startMin >= endMin) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private intervalValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       if (!(control && control.value)) {
         return null;
       }
+      if (control.value.length < 16) {
+        return null;
+      }
+      return this.checkInterval(control.value)
+        ? { invalidDate: 'Invalid interval' }
+        : null;
+    };
+  }
 
-      return control.value < today
-        ? { invalidDate: 'You cannot use past dates' }
+  private timeValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (!(control && control.value)) {
+        return null;
+      }
+      if (control.value.length > 16) {
+        return this.checkTime(control.value, 3)
+          ? { invalidDate: 'Invalid time' }
+          : null;
+      } else
+        return this.checkTime(control.value, 1)
+          ? { invalidDate: 'Invalid time' }
+          : null;
+    };
+  }
+
+  private dateValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (!(control && control.value)) {
+        return null;
+      }
+      return this.checkDate(control.value)
+        ? { invalidDate: 'Invalid date' }
         : null;
     };
   }

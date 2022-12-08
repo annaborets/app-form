@@ -16,9 +16,8 @@ export class HomePageComponent {
 
   public openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      width: '700px',
+      width: '500px',
     });
-
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.formData = result.data;

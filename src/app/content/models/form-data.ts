@@ -1,7 +1,6 @@
 export interface formData {
   name?: string | null;
-  date?: string | null;
+  dateAndTime?: string | null;
   email?: string | null;
   phone?: string | null;
-  timeRange?: string | null;
 }

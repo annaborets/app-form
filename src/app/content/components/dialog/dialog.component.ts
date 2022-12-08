@@ -95,8 +95,7 @@ export class DialogComponent {
     startMin: number,
     endMin: number
   ): number {
-    const interval = (endHour - startHour) * 60 + (endMin - startMin);
-    return interval;
+    return (endHour - startHour) * 60 + (endMin - startMin);
   }
 
   private checkInterval(string: string): boolean {

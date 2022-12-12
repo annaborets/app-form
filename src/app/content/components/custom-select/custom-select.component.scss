@@ -1,0 +1,41 @@
+.select {
+  width: 300px;
+  padding: 15px 15px 0 15px;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  &__input {
+    width: 90%;
+    border: 0;
+    background-color: transparent;
+    padding-bottom: 15px;
+    cursor: pointer;
+    &:focus {
+      outline: none;
+    }
+    &::placeholder {
+      color: black;
+    }
+  }
+}
+
+.items-open {
+  border-bottom: 1px solid lightgray;
+  background-color: transparent;
+}
+
+.input-container {
+  display: flex;
+}
+
+.items__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  margin-bottom: 15px;
+  &:first-child {
+    margin-top: 15px;
+  }
+}

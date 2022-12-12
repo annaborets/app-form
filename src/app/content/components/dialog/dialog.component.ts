@@ -8,7 +8,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 
-import { formData } from '../../models/form-data';
+import { FormData } from '../../models/form-data';
 
 @Component({
   selector: 'app-dialog',
@@ -17,7 +17,7 @@ import { formData } from '../../models/form-data';
 })
 export class DialogComponent {
   public isChecked = false;
-  public formData!: formData;
+  public formData!: FormData;
   public reactiveForm = new FormGroup({
     name: new FormControl('', [
       Validators.required,
@@ -44,7 +44,7 @@ export class DialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: formData
+    @Inject(MAT_DIALOG_DATA) public data: FormData
   ) {}
 
   public onCloseClick(): void {

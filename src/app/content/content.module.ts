@@ -16,9 +16,17 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { TrimDirective } from './directives/trim.directive';
+import { CustomSelectComponent } from './components/custom-select/custom-select.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
-  declarations: [HomePageComponent, DialogComponent, TrimDirective],
+  declarations: [
+    HomePageComponent,
+    DialogComponent,
+    TrimDirective,
+    CustomSelectComponent,
+    FilterPipe,
+  ],
   imports: [
     CommonModule,
     FormsModule,

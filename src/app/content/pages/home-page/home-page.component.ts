@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { DialogComponent } from '../../components/dialog/dialog.component';
-import { formData } from '../../models/form-data';
+import { FormData } from '../../models/form-data';
+import { WithNameArray, WithName } from '../../models/select-data';
 
 @Component({
   selector: 'app-home-page',
@@ -10,7 +11,25 @@ import { formData } from '../../models/form-data';
   styleUrls: ['./home-page.component.scss'],
 })
 export class HomePageComponent {
-  public formData!: formData;
+  public formData!: FormData;
+  public dataList: WithNameArray = [
+    {
+      name: 'Item 1',
+    },
+    {
+      name: 'Item 2',
+    },
+    {
+      name: 'aaaa',
+    },
+    {
+      name: 'bbb',
+    },
+  ];
+  public selectedItem: WithName = {
+    name: 'Item 1',
+    isSelected: true,
+  };
 
   constructor(public dialog: MatDialog) {}
 

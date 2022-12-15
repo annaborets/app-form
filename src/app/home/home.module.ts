@@ -14,19 +14,12 @@ import { MatCardModule } from '@angular/material/card';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 import { HomePageComponent } from './pages/home-page/home-page.component';
-import { DialogComponent } from './components/dialog/dialog.component';
-import { TrimDirective } from './directives/trim.directive';
-import { CustomSelectComponent } from './components/custom-select/custom-select.component';
-import { FilterPipe } from './pipes/filter.pipe';
+import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
+import { SetDirective } from './directives/set.directive';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [
-    HomePageComponent,
-    DialogComponent,
-    TrimDirective,
-    CustomSelectComponent,
-    FilterPipe,
-  ],
+  declarations: [HomePageComponent, FormDialogComponent, SetDirective],
   imports: [
     CommonModule,
     FormsModule,
@@ -41,7 +34,8 @@ import { FilterPipe } from './pipes/filter.pipe';
     MatCheckboxModule,
     MatCardModule,
     NgxMaskModule.forRoot(),
+    SharedModule
   ],
-  exports: [HomePageComponent],
+  exports: [HomePageComponent]
 })
-export class ContentModule {}
+export class HomeModule {}

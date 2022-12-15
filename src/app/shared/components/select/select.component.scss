@@ -1,13 +1,13 @@
 .select {
-  width: 300px;
+  max-width: 100%;
   padding: 15px 15px 0 15px;
-  border: 1px solid black;
-  border-radius: 5px;
+  border-bottom: 1px solid gray;
   cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.04);
   &__input {
     width: 90%;
+    background-color: inherit;
     border: 0;
-    background-color: transparent;
     padding-bottom: 15px;
     cursor: pointer;
     &:focus {
@@ -21,7 +21,6 @@
 
 .items-open {
   border-bottom: 1px solid lightgray;
-  background-color: transparent;
 }
 
 .input-container {

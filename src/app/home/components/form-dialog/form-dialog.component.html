@@ -1,95 +1,86 @@
 <div class="form-wrapper">
-    <div mat-dialog-content>
-        <form [formGroup]="reactiveForm" class="form">
-            <mat-form-field appearance="fill">
-                <mat-label for="name">Name</mat-label>
-                <input matInput 
-                    id="name" 
-                    type="text"
-                    formControlName="name">
-                <mat-hint *ngIf="reactiveForm.controls['name'].status ==='INVALID' && reactiveForm.controls['name'].touched === true">
-                    *Must contain only letters
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label for="dateAndTime">
-                    <span *ngIf="!formData.checkbox">Date and time</span>
-                    <span *ngIf="formData.checkbox">Date and time range</span>
-                </mat-label>
-                <input  matInput
-                    appSet
-                    *ngIf="!formData.checkbox" 
-                    id="dateAndTime"
-                    formControlName="dateAndTime" 
-                    mask="00/00/0000 00:00">
-                <input  matInput 
-                    appSet
-                    #dateAndTimeRangeInput
-                    *ngIf="formData.checkbox"
-                    id="dateAndTime" 
-                    formControlName="dateAndTime" 
-                    mask="00/00/0000 00:00 - 00:00">
-                <mat-icon matSuffix>calendar_today</mat-icon>
-                <mat-hint *ngIf="reactiveForm.controls['dateAndTime'].touched === false">
-                    <span *ngIf="!formData.checkbox">*MM/DD/YYYY HH:MM</span> 
-                    <span *ngIf="formData.checkbox">*MM/DD/YYYY HH:MM - HH:MM</span>
-                </mat-hint>
-                <mat-hint *ngIf="reactiveForm.controls['dateAndTime'].status === 'INVALID' && reactiveForm.controls['dateAndTime'].touched === true">
-                    *Invalid date and time
-                </mat-hint>
-            </mat-form-field>
-            <section>
-                <mat-checkbox  formControlName="checkbox"
-                    (change)=onChangeEvent($event)>
-                    <span>Approximate meeting date</span>
-                </mat-checkbox>
-            </section>
-            <mat-form-field appearance="fill">
-                <mat-label for="phone">Phone number</mat-label>
-                <input matInput 
-                    id="phone" 
-                    formControlName="phone" 
-                    mask="(000) 000-00-00">
-                <mat-icon matSuffix>phone</mat-icon>
-                <mat-hint *ngIf="reactiveForm.controls['phone'].touched === false">*0XX XXX XX XX</mat-hint>
-                <mat-hint *ngIf="reactiveForm.controls['phone'].status ==='INVALID' && reactiveForm.controls['phone'].touched === true">
-                    *Invalid number
-                </mat-hint>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label for="email">Email</mat-label>
-                <input matInput 
-                    id="email" 
-                    type="email"
-                    formControlName="email">
-                <mat-icon matSuffix> email</mat-icon>
-                <mat-hint *ngIf="reactiveForm.controls['email'].status ==='INVALID' && reactiveForm.controls['email'].touched === true">
-                    *Invalid email
-                </mat-hint>
-            </mat-form-field>
-            <section class="select-container">
-                <app-select [options]="optionsList"
-                    [formControl]="reactiveForm.controls['selectOption']"
-                    ngDefaultControl
-                    formControlName="selectOption" 
-                   >
-                </app-select>
-            </section>
-            <div mat-dialog-actions class="buttons-container">
-                <button mat-raised-button 
-                    color="basic" 
-                    (click)="onCloseClick()" 
-                    class="button"> 
-                    Cancel
-                </button>
-                <button mat-raised-button 
-                    color="primary" 
-                    [disabled]="reactiveForm.invalid" 
-                    (click)="onSubmit()"
-                    class="button">
-                    Save changes
-                </button>
-            </div>
-        </form>
-    </div>
+  <div mat-dialog-content>
+    <form [formGroup]="form" class="form">
+      <mat-form-field appearance="fill">
+        <mat-label for="name">Name</mat-label>
+        <input matInput id="name" type="text" formControlName="name" />
+        <mat-hint *ngIf="form.controls['name'].status === 'INVALID' && form.controls['name'].touched">
+          *Must contain only letters
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="dateAndTime">
+          <span *ngIf="!form.value.isApproximateDateSelected">Date and time</span>
+          <span *ngIf="form.value.isApproximateDateSelected">Date and time range</span>
+        </mat-label>
+        <input matInput
+               appSet
+               *ngIf="!form.value.isApproximateDateSelected"
+               id="dateAndTime"
+               formControlName="dateAndTime"
+               mask="00/00/0000 00:00"/>
+        <input matInput
+               appSet
+               #dateAndTimeRangeInput
+               *ngIf="form.value.isApproximateDateSelected"
+               id="dateAndTime"
+               formControlName="dateAndTime"
+               mask="00/00/0000 00:00 - 00:00"/>
+        <mat-icon matSuffix>calendar_today</mat-icon>
+        <mat-hint *ngIf="!form.controls['dateAndTime'].touched">
+          <span *ngIf="!form.value.isApproximateDateSelected">*MM/DD/YYYY HH:MM</span>
+          <span *ngIf="form.value.isApproximateDateSelected">*MM/DD/YYYY HH:MM - HH:MM</span>
+        </mat-hint>
+        <mat-hint *ngIf="form.controls['dateAndTime'].status === 'INVALID' && form.controls['dateAndTime'].touched">
+          *Invalid date and time
+        </mat-hint>
+      </mat-form-field>
+      <section>
+        <mat-checkbox formControlName="isApproximateDateSelected" (change)="onChangeEvent($event)">
+          <span>Approximate meeting date</span>
+        </mat-checkbox>
+      </section>
+      <mat-form-field appearance="fill">
+        <mat-label for="phone">Phone number</mat-label>
+        <input matInput
+               id="phone"
+               formControlName="phone"
+               mask="(000) 000-00-00"/>
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-hint *ngIf="!form.controls['phone'].touched">*0XX XXX XX XX</mat-hint>
+        <mat-hint *ngIf="form.controls['phone'].status === 'INVALID' && form.controls['phone'].touched">
+          *Invalid number
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label for="email">Email</mat-label>
+        <input matInput id="email" type="email" formControlName="email" />
+        <mat-icon matSuffix> email</mat-icon>
+        <mat-hint *ngIf="form.controls['email'].status === 'INVALID' && form.controls['email'].touched">
+          *Invalid email
+        </mat-hint>
+      </mat-form-field>
+      <section class="select-container">
+        <app-select-object [options]="optionsList"
+                           [formControl]="form.controls['selectOption']"
+                           formControlName="selectOption">
+        </app-select-object>
+      </section>
+      <div mat-dialog-actions class="buttons-container">
+        <button mat-raised-button
+                color="basic"
+                (click)="onCloseClick()"
+                class="button">
+                Cancel
+        </button>
+        <button mat-raised-button
+                color="primary"
+                [disabled]="form.invalid"
+                (click)="onSubmit()"
+                class="button">
+          Save changes
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

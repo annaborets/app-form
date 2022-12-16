@@ -3,8 +3,6 @@ import {
   Input,
   EventEmitter,
   Output,
-  ViewChild,
-  ElementRef,
   forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -24,18 +22,16 @@ import { WithName } from 'src/app/home/models/select-data';
   ]
 })
 export class SelectObjectComponent implements ControlValueAccessor {
-  @ViewChild('nameInput') nameInput!: ElementRef;
   @Input('options') options!: WithName[];
-  @Input('selectedOption') selectedOption!: WithName | null;
   @Output() itemSelected: EventEmitter<any> = new EventEmitter();
 
   public searchValue = '';
   public isOptionsShown = false;
-  public val = '';
+  public inputValue!: WithName;
 
   set value(val: any) {
-    if (val !== undefined && this.val !== val) {
-      this.val = val;
+    if (val !== undefined && this.inputValue !== val) {
+      this.inputValue = val;
       this.onChange(val);
       this.onTouch(val);
     }
@@ -45,8 +41,9 @@ export class SelectObjectComponent implements ControlValueAccessor {
 
   public onTouch: any = () => {};
 
-  public writeValue(value: any) {
+  public writeValue(value: WithName) {
     this.value = value;
+    this.isOptionsShown = false;
   }
 
   public registerOnChange(fn: any) {
@@ -57,17 +54,7 @@ export class SelectObjectComponent implements ControlValueAccessor {
     this.onTouch = fn;
   }
 
-  public selectItem(currentOption: WithName): void {
-    this.nameInput.nativeElement.value = '';
-    this.isOptionsShown = false;
-    this.options.filter((option: WithName) => {
-      if (currentOption != option) option.isSelected = false;
-    });
-    currentOption.isSelected = !currentOption.isSelected;
-    this.selectedOption = currentOption.isSelected ? currentOption : null;
-  }
-
-  public onKey(event: any) {
-    this.searchValue = event.target.value;
+  public onKey(event: KeyboardEvent) {
+    this.searchValue = (event.target as HTMLInputElement).value;
   }
 }

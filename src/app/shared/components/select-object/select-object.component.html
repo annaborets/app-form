@@ -3,17 +3,17 @@
        [style.border-bottom]="isOptionsShown ? '1px solid gray' : '0'"
        (click)="isOptionsShown = !isOptionsShown">
     <input class="select__input"
-           #nameInput
            type="text"
-           [placeholder]="selectedOption ? selectedOption['name'] : 'Choose item'"
+           [value]="!inputValue.name ? '': inputValue.name"
+           [placeholder]="'Choose item'"
            (keyup)="onKey($event)"/>
     <mat-icon *ngIf="!isOptionsShown">keyboard_arrow_down</mat-icon>
     <mat-icon *ngIf="isOptionsShown">keyboard_arrow_up</mat-icon>
   </div>
   <div *ngIf="isOptionsShown" class="items-container">
     <div *ngFor="let option of options | filter : searchValue"
-         (click)="selectItem(option)"
-         class="item">
+      (click)="writeValue(option)"
+      class="item">
       <span>{{ option["name"] }}</span>
     </div>
     <div *ngIf="!options.length">No data to display</div>

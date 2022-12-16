@@ -8,7 +8,7 @@ export const EmailValidation = Validators.pattern(
   /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 );
 
-function checkInterval(string: string): boolean {
+const checkInterval = (string: string): boolean => {
   let dateTimeArray = string.split(' ');
   if (dateTimeArray.length <= 2) {
     return false;
@@ -30,17 +30,18 @@ function checkInterval(string: string): boolean {
   } else {
     return false;
   }
-}
-function calculateInterval(
+};
+
+const calculateInterval = (
   startHour: number,
   endHour: number,
   startMin: number,
   endMin: number
-): number {
+): number => {
   return (endHour - startHour) * 60 + (endMin - startMin);
-}
+};
 
-export function IntervalValidator(): ValidatorFn {
+export const IntervalValidator = (): ValidatorFn => {
   return (control: AbstractControl): { [key: string]: any } | null => {
     if (!(control && control.value)) {
       return null;
@@ -52,9 +53,9 @@ export function IntervalValidator(): ValidatorFn {
       ? { invalidDate: 'Invalid interval' }
       : null;
   };
-}
+};
 
-function checkTime(string: string, i: number): boolean {
+const checkTime = (string: string, i: number): boolean => {
   const time = string.split(' ')[i];
   if (!time) {
     return true;
@@ -66,9 +67,9 @@ function checkTime(string: string, i: number): boolean {
   } else {
     return false;
   }
-}
+};
 
-export function TimeValidator(): ValidatorFn {
+export const TimeValidator = (): ValidatorFn => {
   return (control: AbstractControl): { [key: string]: any } | null => {
     if (!(control && control.value)) {
       return null;
@@ -82,9 +83,9 @@ export function TimeValidator(): ValidatorFn {
         ? { invalidDate: 'Invalid time' }
         : null;
   };
-}
+};
 
-function checkDate(string: string): boolean {
+const checkDate = (string: string): boolean => {
   const today = new Date();
   const date: Date = new Date(string.split(' ')[0]);
   if (date < today || date.toString() === 'Invalid Date') {
@@ -92,13 +93,13 @@ function checkDate(string: string): boolean {
   } else {
     return false;
   }
-}
+};
 
-export function DateValidator(): ValidatorFn {
+export const DateValidator = (): ValidatorFn => {
   return (control: AbstractControl): { [key: string]: any } | null => {
     if (!(control && control.value)) {
       return null;
     }
     return checkDate(control.value) ? { invalidDate: 'Invalid date' } : null;
   };
-}
+};

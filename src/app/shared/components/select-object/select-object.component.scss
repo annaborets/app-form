@@ -1,7 +1,6 @@
 .select {
   max-width: 100%;
-  padding: 15px 15px 0 15px;
-  border-bottom: 1px solid gray;
+  padding: 15px 15px 2px 17px;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.04);
   &__input {
@@ -19,22 +18,27 @@
   }
 }
 
-.items-open {
-  border-bottom: 1px solid lightgray;
-}
-
 .input-container {
   display: flex;
 }
 
-.items__container {
-  display: flex;
-  flex-direction: column;
+.items-container {
+  width: 365px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .item {
-  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid lightgray;
+  cursor: pointer;
+  background-color: white;
+  text-align: center;
+  padding: 10px;
+  margin: 0;
   &:first-child {
-    margin-top: 15px;
+    padding-top: 15px;
+  }
+  &:hover {
+    background-color: #eee;
   }
 }

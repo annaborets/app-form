@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  EventEmitter,
-  Output,
-  forwardRef
-} from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { WithName } from 'src/app/home/models/select-data';
@@ -23,35 +17,31 @@ import { WithName } from 'src/app/home/models/select-data';
 })
 export class SelectObjectComponent implements ControlValueAccessor {
   @Input('options') options!: WithName[];
-  @Output() itemSelected: EventEmitter<any> = new EventEmitter();
 
   public searchValue = '';
   public isOptionsShown = false;
-  public inputValue!: WithName;
+  public value!: WithName;
 
-  set value(val: any) {
-    if (val !== undefined && this.inputValue !== val) {
-      this.inputValue = val;
-      this.onChange(val);
-      this.onTouch(val);
-    }
-  }
-
-  public onChange: any = () => {};
-
-  public onTouch: any = () => {};
+  private onChange!: Function;
+  private onTouch!: Function;
 
   public writeValue(value: WithName) {
     this.value = value;
-    this.isOptionsShown = false;
   }
 
-  public registerOnChange(fn: any) {
+  public registerOnChange(fn: Function) {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: any) {
+  public registerOnTouched(fn: Function) {
     this.onTouch = fn;
+  }
+
+  public selectOption(value: WithName) {
+    this.onTouch();
+    this.value = value;
+    this.isOptionsShown = false;
+    this.onChange(value);
   }
 
   public onKey(event: KeyboardEvent) {

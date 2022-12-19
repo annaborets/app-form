@@ -44,8 +44,8 @@ export class FormDialogComponent {
   });
 
   constructor(
-    public dialogRef: MatDialogRef<FormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: FormData,
+    private dialogRef: MatDialogRef<FormDialogComponent>,
     private formBuilder: FormBuilder
   ) {}
 
@@ -54,9 +54,7 @@ export class FormDialogComponent {
   }
 
   public onSubmit(): void {
-    if (this.form.invalid) {
-      return;
-    }
+    if (this.form.invalid) return;
     this.form.value.name = this.form.value.name?.trim();
     this.dialogRef.close({
       data: this.form.value
@@ -64,10 +62,6 @@ export class FormDialogComponent {
   }
 
   public onChangeEvent(event: any) {
-    if (event.checked) {
-      this.form.value.isApproximateDate = true;
-    } else {
-      this.form.value.isApproximateDate = false;
-    }
+    this.form.value.isApproximateDate = event.checked;
   }
 }

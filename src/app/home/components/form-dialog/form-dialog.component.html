@@ -4,7 +4,7 @@
       <mat-form-field appearance="fill">
         <mat-label for="name">Name</mat-label>
         <input matInput id="name" type="text" formControlName="name" />
-        <mat-hint *ngIf="!form.controls['name'].valid  && form.controls['name'].touched">
+        <mat-hint *ngIf="form.controls['name'].invalid  && form.controls['name'].touched">
           *Must contain only letters
         </mat-hint>
       </mat-form-field>
@@ -30,7 +30,7 @@
           <span *ngIf="!form.value.isApproximateDate">*MM/DD/YYYY HH:MM</span>
           <span *ngIf="form.value.isApproximateDate">*MM/DD/YYYY HH:MM - HH:MM</span>
         </mat-hint>
-        <mat-hint *ngIf="!form.controls['dateAndTime'].valid && form.controls['dateAndTime'].touched">
+        <mat-hint *ngIf="form.controls['dateAndTime'].invalid && form.controls['dateAndTime'].touched">
           *Invalid date and time
         </mat-hint>
       </mat-form-field>
@@ -47,7 +47,7 @@
                mask="(000) 000-00-00"/>
         <mat-icon matSuffix>phone</mat-icon>
         <mat-hint *ngIf="!form.controls['phone'].touched">*0XX XXX XX XX</mat-hint>
-        <mat-hint *ngIf="!form.controls['phone'].valid && form.controls['phone'].touched">
+        <mat-hint *ngIf="form.controls['phone'].invalid && form.controls['phone'].touched">
           *Invalid number
         </mat-hint>
       </mat-form-field>
@@ -55,7 +55,7 @@
         <mat-label for="email">Email</mat-label>
         <input matInput id="email" type="email" formControlName="email" />
         <mat-icon matSuffix> email</mat-icon>
-        <mat-hint *ngIf="!form.controls['email'].valid && form.controls['email'].touched">
+        <mat-hint *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
           *Invalid email
         </mat-hint>
       </mat-form-field>

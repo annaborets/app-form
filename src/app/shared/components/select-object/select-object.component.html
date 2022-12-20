@@ -5,7 +5,7 @@
        #trigger="cdkOverlayOrigin">
     <input class="select__input" 
            type="text" 
-           [value]="!value.name ? '': value.name" 
+           [value]="value.name ||''" 
            [placeholder]="'Choose item'"
            (keyup)="onKey($event)" />
     <mat-icon *ngIf="!isOptionsShown">keyboard_arrow_down</mat-icon>
@@ -14,10 +14,8 @@
   <ng-template cdkConnectedOverlay 
                [cdkConnectedOverlayOrigin]="trigger" 
                [cdkConnectedOverlayOpen]="isOptionsShown"
-               cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-               [cdkConnectedOverlayHasBackdrop]="true"
                (detach)="isOptionsShown = false" 
-               (backdropClick)="isOptionsShown = false">
+               (overlayOutsideClick)="isOptionsShown = false">
     <div *ngIf="isOptionsShown" class="items-container">
       <div *ngFor="let option of options | filter : searchValue" 
            (click)="selectOption(option)" 
@@ -27,3 +25,4 @@
       <div *ngIf="!options.length">No data to display</div>
     </div>
   </ng-template>
+</div>

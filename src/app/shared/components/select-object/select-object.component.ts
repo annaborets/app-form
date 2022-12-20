@@ -16,7 +16,7 @@ import { WithName } from 'src/app/home/models/select-data';
   ]
 })
 export class SelectObjectComponent implements ControlValueAccessor {
-  @Input('options') options!: WithName[];
+  @Input('options') options: WithName[] = [];
 
   public searchValue = '';
   public isOptionsShown = false;
@@ -38,9 +38,9 @@ export class SelectObjectComponent implements ControlValueAccessor {
   }
 
   public selectOption(value: WithName) {
-    this.onTouch();
     this.value = value;
     this.isOptionsShown = false;
+    this.onTouch();
     this.onChange(value);
   }
 

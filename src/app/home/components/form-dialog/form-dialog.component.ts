@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Validators, FormBuilder } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { FormData } from '../../models/form-data';
 import { WithName } from '../../models/select-data';
@@ -28,18 +29,18 @@ export class FormDialogComponent {
 
   public form = this.formBuilder.group({
     name: ['', [Validators.required, NameValidation]],
-    dateAndTime: [
-      '',
-      [
-        Validators.required,
-        DateValidator(),
-        TimeValidator(),
-        IntervalValidator()
-      ]
-    ],
+    // dateAndTime: [
+    //   '',
+    //   [
+    //     Validators.required,
+    //     DateValidator(),
+    //     TimeValidator(),
+    //     IntervalValidator()
+    //   ]
+    // ],
     phone: ['', [Validators.required, PhoneValidation]],
     email: ['', [Validators.required, Validators.email, EmailValidation]],
-    isApproximateDate: [false, []],
+    // isApproximateDate: [false, []],
     selectOption: [this.options, [Validators.required]]
   });
 
@@ -55,13 +56,14 @@ export class FormDialogComponent {
 
   public onSubmit(): void {
     if (this.form.invalid) return;
+
     this.form.value.name = this.form.value.name?.trim();
     this.dialogRef.close({
       data: this.form.value
     });
   }
 
-  public onChangeEvent(event: any) {
-    this.form.value.isApproximateDate = event.checked;
-  }
+  // public onChangeEvent(event: MatCheckboxChange) {
+  //   this.form.value.isApproximateDate = event.checked;
+  // }
 }

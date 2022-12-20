@@ -1,0 +1,44 @@
+<div class="container">
+    <mat-form-field appearance="fill" class="input">
+        <mat-label for="date">Date*</mat-label>
+        <input matInput 
+               id="date" 
+               mask="00/00/0000" 
+               [value]="selectedDate || '' | date: 'MM/dd/yyyy'"/>
+        <mat-icon matSuffix 
+                  (click)="isOpen = !isOpen"
+                  class="icon"  
+                  cdkOverlayOrigin
+                  #trigger="cdkOverlayOrigin">
+            date_range
+        </mat-icon>
+        <mat-hint>*MM/DD/YYYY</mat-hint>
+    </mat-form-field>
+    <ng-template cdkConnectedOverlay 
+                 [cdkConnectedOverlayOrigin]="trigger" 
+                 [cdkConnectedOverlayOpen]="isOpen"
+                 (detach)="isOpen = false" 
+                 (overlayOutsideClick)="isOpen = false">
+        <div class="datepicker">
+            <div class="datepicker__header">
+                <button (click)="previousMonth()">
+                    <mat-icon>keyboard_arrow_left</mat-icon>
+                </button>
+                <div>{{currentMonth}} {{currentYear}}</div>
+                <button (click)="nextMonth()">
+                    <mat-icon>keyboard_arrow_right</mat-icon>
+                </button>
+            </div>
+            <div class="day-container">
+                <div class="header" *ngFor="let header of headers">{{header}}</div>
+                <button class="day" 
+                        *ngFor="let day of daysOfCurrentMonth" 
+                        (click)="selectDate(day)"
+                        [class.hidden]="day === 0"
+                        [class.current]="day === currentDate.getDate()">
+                    {{day}}
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</div>

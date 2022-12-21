@@ -15,12 +15,11 @@
     <mat-card-content>
         <div class="content">
             <div>Name: {{formData.name}}</div>
-            <div>Date and time: {{formData.dateAndTime}}</div>
+            <div>Date: {{formData.date | date: 'MM/dd/yyyy'}}</div>
+            <div>Time: {{formData.selectedTimeSlot?.name}}</div>
             <div>Phone: {{formData.phone}}</div>
             <div>Email: {{formData.email}}</div>
             <div>Option: {{formData.selectOption?.name}}</div>
         </div>
     </mat-card-content>
 </mat-card>
-
-<app-datepicker></app-datepicker>

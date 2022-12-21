@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Validators, FormBuilder } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { FormData } from '../../models/form-data';
 import { WithName } from '../../models/select-data';
@@ -9,8 +8,6 @@ import {
   NameValidation,
   PhoneValidation,
   EmailValidation,
-  IntervalValidator,
-  TimeValidator,
   DateValidator
 } from '../../validators/form-validators';
 
@@ -20,28 +17,27 @@ import {
   styleUrls: ['./form-dialog.component.scss']
 })
 export class FormDialogComponent {
-  public options: WithName[] = [
+  public optionsForItems: WithName[] = [
     { name: 'Item 1' },
     { name: 'Item 2' },
     { name: 'Item 3' },
     { name: 'Item 4' }
   ];
 
+  public optionsForTimeSlots: WithName[] = [
+    { name: '9 - 11' },
+    { name: '11 - 13' },
+    { name: '13 - 15' },
+    { name: '15 - 17' }
+  ];
+
   public form = this.formBuilder.group({
     name: ['', [Validators.required, NameValidation]],
-    // dateAndTime: [
-    //   '',
-    //   [
-    //     Validators.required,
-    //     DateValidator(),
-    //     TimeValidator(),
-    //     IntervalValidator()
-    //   ]
-    // ],
+    date: ['', [Validators.required, DateValidator()]],
+    selectedTimeSlot: ['', [Validators.required]],
     phone: ['', [Validators.required, PhoneValidation]],
     email: ['', [Validators.required, Validators.email, EmailValidation]],
-    // isApproximateDate: [false, []],
-    selectOption: [this.options, [Validators.required]]
+    selectOption: [this.optionsForItems, [Validators.required]]
   });
 
   constructor(
@@ -62,8 +58,4 @@ export class FormDialogComponent {
       data: this.form.value
     });
   }
-
-  // public onChangeEvent(event: MatCheckboxChange) {
-  //   this.form.value.isApproximateDate = event.checked;
-  // }
 }

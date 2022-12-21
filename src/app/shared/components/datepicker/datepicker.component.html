@@ -21,22 +21,23 @@
                  (overlayOutsideClick)="isOpen = false">
         <div class="datepicker">
             <div class="datepicker__header">
-                <button (click)="previousMonth()">
+                <button class="datepicker__button" (click)="previousMonth()">
                     <mat-icon>keyboard_arrow_left</mat-icon>
                 </button>
                 <div>{{currentMonth}} {{currentYear}}</div>
-                <button (click)="nextMonth()">
+                <button class="datepicker__button" (click)="nextMonth()">
                     <mat-icon>keyboard_arrow_right</mat-icon>
                 </button>
             </div>
             <div class="day-container">
                 <div class="header" *ngFor="let header of headers">{{header}}</div>
                 <button class="day" 
-                        *ngFor="let day of daysOfCurrentMonth" 
+                        *ngFor="let day of datesOfCurrentMonth" 
                         (click)="selectDate(day)"
-                        [class.hidden]="day === 0"
-                        [class.current]="day === currentDate.getDate()">
-                    {{day}}
+                        [class.hidden]="!day.getDate()"
+                        [class.day--chosen]=" selectedDate? day.toString() === selectedDate.toString() : ''"
+                        [class.day--current]="day.toString() === currentDate.toString()">
+                    {{day.getDate()}}
                 </button>
             </div>
         </div>

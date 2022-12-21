@@ -8,37 +8,13 @@
           *Must contain only letters
         </mat-hint>
       </mat-form-field>
-      <!-- <mat-form-field appearance="fill">
-        <mat-label for="dateAndTime">
-          <span *ngIf="!form.value.isApproximateDate">Date and time</span>
-          <span *ngIf="form.value.isApproximateDate">Date and time range</span>
-        </mat-label>
-        <input matInput
-               appSet
-               *ngIf="!form.value.isApproximateDate"
-               id="dateAndTime"
-               formControlName="dateAndTime"
-               mask="00/00/0000 00:00"/>
-        <input matInput
-               appSet
-               *ngIf="form.value.isApproximateDate"
-               id="dateAndTime"
-               formControlName="dateAndTime"
-               mask="00/00/0000 00:00 - 00:00"/>
-        <mat-icon matSuffix>calendar_today</mat-icon>
-        <mat-hint *ngIf="!form.controls['dateAndTime'].touched">
-          <span *ngIf="!form.value.isApproximateDate">*MM/DD/YYYY HH:MM</span>
-          <span *ngIf="form.value.isApproximateDate">*MM/DD/YYYY HH:MM - HH:MM</span>
-        </mat-hint>
-        <mat-hint *ngIf="form.controls['dateAndTime'].invalid && form.controls['dateAndTime'].touched">
-          *Invalid date and time
-        </mat-hint>
-      </mat-form-field> -->
-      <!-- <section>
-        <mat-checkbox formControlName="isApproximateDate" (change)="onChangeEvent($event)">
-          <span>Approximate meeting date</span>
-        </mat-checkbox>
-      </section> -->
+      <section>
+        <app-datepicker formControlName="date"></app-datepicker>
+      </section>
+      <section>
+        <app-select-object [options]="optionsForTimeSlots" formControlName="selectedTimeSlot">
+        </app-select-object>
+      </section>
       <mat-form-field appearance="fill">
         <mat-label for="phone">Phone number</mat-label>
         <input matInput
@@ -59,8 +35,8 @@
           *Invalid email
         </mat-hint>
       </mat-form-field>
-      <section class="select-container">
-        <app-select-object [options]="options" formControlName="selectOption">
+      <section>
+        <app-select-object [options]="optionsForItems" formControlName="selectOption">
         </app-select-object>
       </section>
       <div mat-dialog-actions class="buttons-container">

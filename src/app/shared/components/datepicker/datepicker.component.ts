@@ -1,6 +1,13 @@
-import { Component, Input, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { getDaysInMonth, addMonths, subMonths, startOfMonth } from 'date-fns';
+import {
+  addMonths,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  startOfDay
+} from 'date-fns';
 
 enum MonthList {
   January = 1,
@@ -32,24 +39,19 @@ enum MonthList {
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
   public isOpen = false;
   public headers: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  public daysOfCurrentMonth: number[] = [];
-  public currentDate = new Date();
-  public selectedDate = new Date();
-  public visibleDate = new Date();
+  public datesOfCurrentMonth: Date[] = [];
+  public currentDate = startOfDay(new Date());
+  public selectedDate!: Date;
+  public visibleDate = startOfDay(new Date());
   public currentYear!: number;
   public currentMonth!: string;
 
   private onChange!: Function;
   private onTouch!: Function;
 
-  constructor() {}
-
   ngOnInit(): void {
     this.setDaysOfMonth();
     this.setCurrentMonthAndYear();
-    console.log(this.currentMonth);
-    const result = startOfMonth(this.visibleDate);
-    console.log(result);
   }
 
   public writeValue(value: any) {
@@ -64,12 +66,11 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
     this.onTouch = fn;
   }
 
-  public selectDate(day: number): void {
+  public selectDate(day: Date): void {
+    this.selectedDate = day;
     this.isOpen = false;
-    this.selectedDate = new Date(this.visibleDate);
-    this.selectedDate.setDate(day);
-    console.log(this.selectedDate);
-    console.log(this.selectedDate.getDay());
+    this.onTouch();
+    this.onChange(day);
   }
 
   public previousMonth(): void {
@@ -85,21 +86,25 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   }
 
   private setDaysOfMonth(): void {
-    this.daysOfCurrentMonth = [];
-    for (let i = 1; i <= getDaysInMonth(this.visibleDate); i++) {
-      this.daysOfCurrentMonth.push(i);
-    }
+    this.datesOfCurrentMonth = eachDayOfInterval({
+      start: startOfMonth(this.visibleDate),
+      end: endOfMonth(this.visibleDate)
+    });
+
+    this.datesOfCurrentMonth.map((item) => {
+      startOfDay(item);
+    });
+
     const firstDay = startOfMonth(this.visibleDate).getDay();
-    let counter;
-
+    let daysBeforeFirst;
     if (firstDay === 0) {
-      counter = 7;
+      daysBeforeFirst = 7;
     } else {
-      counter = firstDay;
+      daysBeforeFirst = firstDay;
     }
 
-    for (let i = 1; i < counter; i++) {
-      this.daysOfCurrentMonth.unshift(0);
+    for (let i = 1; i < daysBeforeFirst; i++) {
+      this.datesOfCurrentMonth.unshift(new Date(''));
     }
   }
 

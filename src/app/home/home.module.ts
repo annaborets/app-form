@@ -15,11 +15,10 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { FormDialogComponent } from './components/form-dialog/form-dialog.component';
-import { SetDirective } from './directives/set.directive';
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [HomePageComponent, FormDialogComponent, SetDirective],
+  declarations: [HomePageComponent, FormDialogComponent],
   imports: [
     CommonModule,
     FormsModule,

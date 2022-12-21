@@ -5,7 +5,7 @@
        #trigger="cdkOverlayOrigin">
     <input class="select__input" 
            type="text" 
-           [value]="value.name ||''" 
+           [value]="value.name || ''" 
            [placeholder]="'Choose item'"
            (keyup)="onKey($event)" />
     <mat-icon *ngIf="!isOptionsShown">keyboard_arrow_down</mat-icon>

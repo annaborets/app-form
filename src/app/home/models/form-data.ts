@@ -2,9 +2,9 @@ import { WithName } from './select-data';
 
 export interface FormData {
   name: string | null;
-  dateAndTime: string | null;
+  date: Date | null;
+  selectedTimeSlot: WithName | null;
   email: string | null;
   phone: string | null;
-  isApproximateDate?: boolean | null;
   selectOption: WithName | null;
 }

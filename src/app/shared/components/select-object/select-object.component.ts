@@ -17,6 +17,7 @@ import { WithName } from 'src/app/home/models/select-data';
 })
 export class SelectObjectComponent implements ControlValueAccessor {
   @Input('options') options: WithName[] = [];
+  @Input('placeholder') placeholder = '';
 
   public searchValue = '';
   public isOptionsShown = false;

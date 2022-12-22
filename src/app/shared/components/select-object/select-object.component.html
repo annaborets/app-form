@@ -6,7 +6,7 @@
     <input class="select__input" 
            type="text" 
            [value]="value.name || ''" 
-           [placeholder]="'Choose item'"
+           [placeholder]="placeholder"
            (keyup)="onKey($event)" />
     <mat-icon *ngIf="!isOptionsShown">keyboard_arrow_down</mat-icon>
     <mat-icon *ngIf="isOptionsShown">keyboard_arrow_up</mat-icon>

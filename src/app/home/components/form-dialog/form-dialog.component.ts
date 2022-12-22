@@ -17,6 +17,8 @@ import {
   styleUrls: ['./form-dialog.component.scss']
 })
 export class FormDialogComponent {
+  public timeSlotsPlaceholder = 'Choose time slot';
+  public itemsPlaceholder = 'Choose item';
   public optionsForItems: WithName[] = [
     { name: 'Item 1' },
     { name: 'Item 2' },

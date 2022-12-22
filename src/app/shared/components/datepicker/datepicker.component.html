@@ -35,7 +35,7 @@
                         *ngFor="let day of datesOfCurrentMonth" 
                         (click)="selectDate(day)"
                         [class.hidden]="!day.getDate()"
-                        [class.day--chosen]=" selectedDate? day.toString() === selectedDate.toString() : ''"
+                        [class.day--chosen]="day.toString() === selectedDate.toString() || ''"
                         [class.day--current]="day.toString() === currentDate.toString()">
                     {{day.getDate()}}
                 </button>

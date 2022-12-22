@@ -3,8 +3,11 @@
     <form [formGroup]="form" class="form">
       <mat-form-field appearance="fill">
         <mat-label for="name">Name</mat-label>
-        <input matInput id="name" type="text" formControlName="name" />
-        <mat-hint *ngIf="form.controls['name'].invalid  && form.controls['name'].touched">
+        <input matInput 
+               id="name" 
+               type="text" 
+               formControlName="name" />
+        <mat-hint *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
           *Must contain only letters
         </mat-hint>
       </mat-form-field>
@@ -12,7 +15,9 @@
         <app-datepicker formControlName="date"></app-datepicker>
       </section>
       <section>
-        <app-select-object [options]="optionsForTimeSlots" formControlName="selectedTimeSlot">
+        <app-select-object [options]="optionsForTimeSlots" 
+                           formControlName="selectedTimeSlot" 
+                           [placeholder]="timeSlotsPlaceholder">
         </app-select-object>
       </section>
       <mat-form-field appearance="fill">
@@ -29,14 +34,19 @@
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label for="email">Email</mat-label>
-        <input matInput id="email" type="email" formControlName="email" />
+        <input matInput 
+               id="email" 
+               type="email" 
+               formControlName="email" />
         <mat-icon matSuffix>email</mat-icon>
         <mat-hint *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
           *Invalid email
         </mat-hint>
       </mat-form-field>
       <section>
-        <app-select-object [options]="optionsForItems" formControlName="selectOption">
+        <app-select-object [options]="optionsForItems" 
+                           formControlName="selectOption" 
+                           [placeholder]="itemsPlaceholder">
         </app-select-object>
       </section>
       <div mat-dialog-actions class="buttons-container">

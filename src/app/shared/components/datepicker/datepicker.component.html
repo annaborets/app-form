@@ -1,10 +1,19 @@
 <div class="container">
     <mat-form-field appearance="fill" class="input">
-        <mat-label for="date">Date*</mat-label>
-        <input matInput 
+        <mat-label *ngIf="!isChecked" for="date">Date*</mat-label>
+        <mat-label *ngIf="isChecked" for="dateRange">Date range*</mat-label>
+        <input *ngIf="!isChecked"
+               matInput 
                id="date" 
                mask="00/00/0000" 
-               [value]="selectedDate || '' | date: 'MM/dd/yyyy'"/>
+               (keyup)="onKey($event)"
+               value="{{selectedDate || '' | date: 'dd/MM/yyyy'}}"/>
+        <input *ngIf="isChecked"
+               matInput 
+               id="dateRange" 
+               mask="00/00/0000 - 00/00/0000" 
+               (keyup)="onKey($event)"
+               value="{{selectedRange.start || '' | date: 'dd/MM/yyyy'}} - {{selectedRange.end || '' | date: 'dd/MM/yyyy'}}"/>
         <mat-icon matSuffix 
                   (click)="isOpen = !isOpen"
                   class="icon"  
@@ -12,12 +21,12 @@
                   #trigger="cdkOverlayOrigin">
             date_range
         </mat-icon>
-        <mat-hint>*MM/DD/YYYY</mat-hint>
+        <mat-hint *ngIf="!isChecked">*DD/MM/YYYY</mat-hint>
+        <mat-hint *ngIf="isChecked">*DD/MM/YYYY - DD/MM/YYYY</mat-hint>
     </mat-form-field>
     <ng-template cdkConnectedOverlay 
                  [cdkConnectedOverlayOrigin]="trigger" 
                  [cdkConnectedOverlayOpen]="isOpen"
-                 (detach)="isOpen = false" 
                  (overlayOutsideClick)="isOpen = false">
         <div class="datepicker">
             <div class="datepicker__header">
@@ -31,13 +40,15 @@
             </div>
             <div class="day-container">
                 <div class="header" *ngFor="let header of headers">{{header}}</div>
+                <button class="empty" 
+                        *ngFor="let date of datesBeforeFirst">
+                </button>
                 <button class="day" 
-                        *ngFor="let day of datesOfCurrentMonth" 
-                        (click)="selectDate(day)"
-                        [class.hidden]="!day.getDate()"
-                        [class.day--chosen]="day.toString() === selectedDate.toString() || ''"
-                        [class.day--current]="day.toString() === currentDate.toString()">
-                    {{day.getDate()}}
+                        *ngFor="let date of datesOfCurrentMonth" 
+                        (click)="selectDate(date)"
+                        [class.day--chosen]="date.toString() === selectedDate?.toString() || isRangeContainsDate(date)"
+                        [class.day--current]="date.toString() === currentDate.toString()">
+                    {{date.getDate()}}
                 </button>
             </div>
         </div>

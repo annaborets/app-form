@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Validators, FormBuilder } from '@angular/forms';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 import { FormData } from '../../models/form-data';
 import { WithName } from '../../models/select-data';
@@ -8,7 +9,8 @@ import {
   NameValidation,
   PhoneValidation,
   EmailValidation,
-  DateValidator
+  DateValidator,
+  DateRangeValidator
 } from '../../validators/form-validators';
 
 @Component({
@@ -17,6 +19,7 @@ import {
   styleUrls: ['./form-dialog.component.scss']
 })
 export class FormDialogComponent {
+  public isChecked = false;
   public timeSlotsPlaceholder = 'Choose time slot';
   public itemsPlaceholder = 'Choose item';
   public optionsForItems: WithName[] = [
@@ -35,11 +38,13 @@ export class FormDialogComponent {
 
   public form = this.formBuilder.group({
     name: ['', [Validators.required, NameValidation]],
-    date: ['', [Validators.required, DateValidator()]],
+    date: ['', [DateValidator()]],
+    dateRange: [{}, DateRangeValidator()],
+    isRangedDate: [''],
     selectedTimeSlot: ['', [Validators.required]],
     phone: ['', [Validators.required, PhoneValidation]],
     email: ['', [Validators.required, Validators.email, EmailValidation]],
-    selectOption: [this.optionsForItems, [Validators.required]]
+    selectOption: ['', [Validators.required]]
   });
 
   constructor(
@@ -54,10 +59,15 @@ export class FormDialogComponent {
 
   public onSubmit(): void {
     if (this.form.invalid) return;
-
+    console.log(this.form.value);
+    console.log(this.form.value.dateRange);
     this.form.value.name = this.form.value.name?.trim();
     this.dialogRef.close({
       data: this.form.value
     });
+  }
+
+  public onCheckboxChange(event: MatCheckboxChange) {
+    this.isChecked = event.checked;
   }
 }

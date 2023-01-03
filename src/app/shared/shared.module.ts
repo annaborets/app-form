@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 import { SelectObjectComponent } from './components/select-object/select-object.component';
 import { FilterPipe } from './pipes/filter.pipe';
@@ -16,7 +17,8 @@ import { DatepickerComponent } from './components/datepicker/datepicker.componen
     MatIconModule,
     OverlayModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    NgxMaskModule.forRoot()
   ],
   exports: [SelectObjectComponent, DatepickerComponent]
 })

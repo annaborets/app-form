@@ -27,3 +27,15 @@ export const DateValidator = (): ValidatorFn => {
     return checkDate(control.value) ? { invalidDate: 'Invalid date' } : null;
   };
 };
+
+export const DateRangeValidator = (): ValidatorFn => {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (!(control && control.value)) {
+      return null;
+    }
+
+    return checkDate(control.value.start)
+      ? { invalidDate: 'Invalid date' }
+      : null;
+  };
+};

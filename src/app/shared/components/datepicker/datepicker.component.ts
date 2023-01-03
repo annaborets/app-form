@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   addMonths,
@@ -8,6 +8,8 @@ import {
   eachDayOfInterval,
   startOfDay
 } from 'date-fns';
+
+import { DatepickerObject } from 'src/app/home/models/datepicker-object';
 
 enum MonthList {
   January = 1,
@@ -37,25 +39,41 @@ enum MonthList {
   ]
 })
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
+  @Input('isChecked') isChecked: boolean = false;
   public isOpen = false;
-  public headers: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  public datesBeforeFirst: number[] = [];
+  public readonly headers: string[] = [
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun'
+  ];
   public datesOfCurrentMonth: Date[] = [];
   public currentDate = startOfDay(new Date());
-  public selectedDate!: Date;
+  public selectedDate: Date | null = null;
+  public selectedRange: DatepickerObject = {
+    start: null,
+    end: null
+  };
   public visibleDate = startOfDay(new Date());
   public currentYear!: number;
   public currentMonth!: string;
+  public datesWithinInterval: Date[] = [];
+  public inputValue: string = '';
 
   private onChange!: Function;
   private onTouch!: Function;
 
   ngOnInit(): void {
-    this.setDaysOfMonth();
+    this.setDatesOfMonth();
     this.setCurrentMonthAndYear();
   }
 
   public writeValue(value: any) {
-    this.selectedDate = value;
+    this.isChecked ? (this.selectedRange = value) : (this.selectedDate = value);
   }
 
   public registerOnChange(fn: Function) {
@@ -66,26 +84,78 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
     this.onTouch = fn;
   }
 
-  public selectDate(day: Date): void {
-    this.selectedDate = day;
-    this.isOpen = false;
+  public selectDate(date: Date): void {
+    if (!this.isChecked) {
+      this.selectedDate = date;
+      this.isOpen = false;
+      this.onChange(this.selectedDate);
+    }
+    if (this.isChecked && !this.selectedRange.start) {
+      console.log('no start');
+      this.selectedRange.start = date;
+      console.log('end', this.selectedRange.end);
+      return;
+    }
+    if (this.isChecked && this.selectedRange.start && !this.selectedRange.end) {
+      console.log('here');
+      this.selectedRange.end = date;
+      this.selectedDate = null;
+      this.isOpen = false;
+      this.onChange(this.selectedRange);
+      return;
+    }
+    if (this.isChecked && this.selectedRange.start && this.selectedRange.end) {
+      console.log('hello');
+      this.selectedRange.start = date;
+      this.selectedRange.end = undefined;
+      console.log('end', this.selectedRange.end);
+      return;
+    }
+    console.log('range', this.selectedRange);
+    this.setDatesWithinInterval(this.selectedRange);
+    console.log('date', this.selectedDate);
     this.onTouch();
-    this.onChange(day);
   }
 
   public previousMonth(): void {
     this.visibleDate = subMonths(this.visibleDate, 1);
-    this.setDaysOfMonth();
+    this.setDatesOfMonth();
     this.setCurrentMonthAndYear();
   }
 
   public nextMonth(): void {
     this.visibleDate = addMonths(this.visibleDate, 1);
-    this.setDaysOfMonth();
+    this.setDatesOfMonth();
     this.setCurrentMonthAndYear();
   }
 
-  private setDaysOfMonth(): void {
+  public isRangeContainsDate(date: Date): boolean {
+    let stringsWithinInterval = this.datesWithinInterval.map((item) =>
+      item.toString()
+    );
+    return stringsWithinInterval.includes(date.toString());
+  }
+
+  public onKey(event: any) {
+    this.inputValue = event.target.value;
+    console.log(event.target.value);
+    this.transformStringToDate(this.inputValue);
+  }
+
+  public transformStringToDate(string: string) {
+    if (string.length === 10) {
+      this.selectedDate = new Date(string.split('/').reverse().join('/'));
+      this.selectDate(this.selectedDate);
+    }
+    if (this.isChecked && string.length === 23) {
+      let start = new Date(string.slice(0, 10).split('/').reverse().join('/'));
+      this.selectDate(start);
+      let end = new Date(string.slice(13, 23).split('/').reverse().join('/'));
+      this.selectDate(end);
+    }
+  }
+
+  private setDatesOfMonth(): void {
     this.datesOfCurrentMonth = eachDayOfInterval({
       start: startOfMonth(this.visibleDate),
       end: endOfMonth(this.visibleDate)
@@ -95,21 +165,32 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
       startOfDay(item);
     });
 
-    const firstDay = startOfMonth(this.visibleDate).getDay();
-    let daysBeforeFirst;
-    if (firstDay === 0) {
-      daysBeforeFirst = 7;
+    const firstDate = startOfMonth(this.visibleDate).getDay();
+    this.datesBeforeFirst = [];
+    let numberOfdatesBeforeFirst;
+    if (firstDate === 0) {
+      numberOfdatesBeforeFirst = 7;
     } else {
-      daysBeforeFirst = firstDay;
+      numberOfdatesBeforeFirst = firstDate;
     }
 
-    for (let i = 1; i < daysBeforeFirst; i++) {
-      this.datesOfCurrentMonth.unshift(new Date(''));
+    for (let i = 1; i < numberOfdatesBeforeFirst; i++) {
+      this.datesBeforeFirst.unshift(0);
     }
   }
 
   private setCurrentMonthAndYear() {
     this.currentYear = this.visibleDate.getFullYear();
     this.currentMonth = MonthList[this.visibleDate.getMonth() + 1];
+  }
+
+  private setDatesWithinInterval(range: DatepickerObject) {
+    if (range.start && range.end) {
+      this.datesWithinInterval = eachDayOfInterval({
+        start: range.start,
+        end: range.end
+      });
+      console.log(this.datesWithinInterval);
+    }
   }
 }

@@ -19,7 +19,7 @@ import {
   styleUrls: ['./form-dialog.component.scss']
 })
 export class FormDialogComponent {
-  public isChecked = false;
+  public isDateRangeChecked = false;
   public timeSlotsPlaceholder = 'Choose time slot';
   public itemsPlaceholder = 'Choose item';
   public optionsForItems: WithName[] = [
@@ -66,6 +66,6 @@ export class FormDialogComponent {
   }
 
   public onCheckboxChange(event: MatCheckboxChange) {
-    this.isChecked = event.checked;
+    this.isDateRangeChecked = event.checked;
   }
 }

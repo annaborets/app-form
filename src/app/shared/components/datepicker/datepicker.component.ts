@@ -39,7 +39,7 @@ enum MonthList {
   ]
 })
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
-  @Input('isChecked') isChecked: boolean = false;
+  @Input('isDateRangeChecked') isDateRangeChecked: boolean = false;
   public isOpen = false;
   public datesBeforeFirst: number[] = [];
   public readonly headers: string[] = [
@@ -73,7 +73,9 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   }
 
   public writeValue(value: any) {
-    this.isChecked ? (this.selectedRange = value) : (this.selectedDate = value);
+    this.isDateRangeChecked
+      ? (this.selectedRange = value)
+      : (this.selectedDate = value);
   }
 
   public registerOnChange(fn: Function) {
@@ -85,18 +87,22 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   }
 
   public selectDate(date: Date): void {
-    if (!this.isChecked) {
+    if (!this.isDateRangeChecked) {
       this.selectedDate = date;
       this.isOpen = false;
       this.onChange(this.selectedDate);
     }
 
-    if (this.isChecked && !this.selectedRange.start) {
+    if (this.isDateRangeChecked && !this.selectedRange.start) {
       this.selectedRange.start = date;
       return;
     }
 
-    if (this.isChecked && this.selectedRange.start && !this.selectedRange.end) {
+    if (
+      this.isDateRangeChecked &&
+      this.selectedRange.start &&
+      !this.selectedRange.end
+    ) {
       this.selectedRange.end = date;
       this.selectedDate = null;
       this.isOpen = false;
@@ -106,7 +112,11 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
       return;
     }
 
-    if (this.isChecked && this.selectedRange.start && this.selectedRange.end) {
+    if (
+      this.isDateRangeChecked &&
+      this.selectedRange.start &&
+      this.selectedRange.end
+    ) {
       this.selectedRange.start = date;
       this.selectedRange.end = undefined;
       this.setDatesWithinInterval(this.selectedRange);
@@ -139,12 +149,12 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   }
 
   public transformStringToDate(string: string) {
-    if (!this.isChecked && string.length === 10) {
+    if (!this.isDateRangeChecked && string.length === 10) {
       this.selectedDate = new Date(string.split('/').reverse().join('/'));
       this.selectDate(this.selectedDate);
     }
 
-    if (this.isChecked && string.length === 23) {
+    if (this.isDateRangeChecked && string.length === 23) {
       let start = new Date(string.slice(0, 10).split('/').reverse().join('/'));
       this.selectDate(start);
       let end = new Date(string.slice(13, 23).split('/').reverse().join('/'));

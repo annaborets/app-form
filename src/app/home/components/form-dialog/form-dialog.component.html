@@ -13,11 +13,11 @@
       </mat-form-field>
       <section>
         <app-datepicker formControlName="date" 
-                        [isChecked]="isChecked" 
-                        *ngIf="!isChecked"></app-datepicker>
+                        [isDateRangeChecked]="isDateRangeChecked" 
+                        *ngIf="!isDateRangeChecked"></app-datepicker>
         <app-datepicker formControlName="dateRange" 
-                        [isChecked]="isChecked" 
-                        *ngIf="isChecked"></app-datepicker>
+                        [isDateRangeChecked]="isDateRangeChecked" 
+                        *ngIf="isDateRangeChecked"></app-datepicker>
       </section>
       <section>
         <mat-checkbox formControlName="isRangedDate" 

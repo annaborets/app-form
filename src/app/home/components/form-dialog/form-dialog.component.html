@@ -12,11 +12,18 @@
         </mat-hint>
       </mat-form-field>
       <section>
-        <app-datepicker formControlName="date" [isChecked]="isChecked" *ngIf="!isChecked"></app-datepicker>
-        <app-datepicker formControlName="dateRange" [isChecked]="isChecked" *ngIf="isChecked"></app-datepicker>
+        <app-datepicker formControlName="date" 
+                        [isChecked]="isChecked" 
+                        *ngIf="!isChecked"></app-datepicker>
+        <app-datepicker formControlName="dateRange" 
+                        [isChecked]="isChecked" 
+                        *ngIf="isChecked"></app-datepicker>
       </section>
       <section>
-        <mat-checkbox formControlName="isRangedDate" (change)="onCheckboxChange($event)" color="primary">Choose date range</mat-checkbox>
+        <mat-checkbox formControlName="isRangedDate" 
+                      (change)="onCheckboxChange($event)" 
+                      color="primary">
+        Choose date range</mat-checkbox>
       </section>
       <section>
         <app-select-object [options]="optionsForTimeSlots" 
@@ -49,7 +56,7 @@
       </mat-form-field>
       <section>
         <app-select-object [options]="optionsForItems" 
-                           formControlName="selectOption" 
+                           formControlName="selectedOption" 
                            [placeholder]="itemsPlaceholder">
         </app-select-object>
       </section>

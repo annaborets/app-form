@@ -44,7 +44,7 @@ export class FormDialogComponent {
     selectedTimeSlot: ['', [Validators.required]],
     phone: ['', [Validators.required, PhoneValidation]],
     email: ['', [Validators.required, Validators.email, EmailValidation]],
-    selectOption: ['', [Validators.required]]
+    selectedOption: ['', [Validators.required]]
   });
 
   constructor(
@@ -59,8 +59,6 @@ export class FormDialogComponent {
 
   public onSubmit(): void {
     if (this.form.invalid) return;
-    console.log(this.form.value);
-    console.log(this.form.value.dateRange);
     this.form.value.name = this.form.value.name?.trim();
     this.dialogRef.close({
       data: this.form.value

@@ -90,31 +90,28 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
       this.isOpen = false;
       this.onChange(this.selectedDate);
     }
+
     if (this.isChecked && !this.selectedRange.start) {
-      console.log('no start');
       this.selectedRange.start = date;
-      console.log('end', this.selectedRange.end);
       return;
     }
+
     if (this.isChecked && this.selectedRange.start && !this.selectedRange.end) {
-      console.log('here');
       this.selectedRange.end = date;
       this.selectedDate = null;
       this.isOpen = false;
       this.onChange(this.selectedRange);
+      this.setDatesWithinInterval(this.selectedRange);
+      this.onTouch();
       return;
     }
+
     if (this.isChecked && this.selectedRange.start && this.selectedRange.end) {
-      console.log('hello');
       this.selectedRange.start = date;
       this.selectedRange.end = undefined;
-      console.log('end', this.selectedRange.end);
-      return;
+      this.setDatesWithinInterval(this.selectedRange);
+      this.onTouch();
     }
-    console.log('range', this.selectedRange);
-    this.setDatesWithinInterval(this.selectedRange);
-    console.log('date', this.selectedDate);
-    this.onTouch();
   }
 
   public previousMonth(): void {
@@ -138,15 +135,15 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
 
   public onKey(event: any) {
     this.inputValue = event.target.value;
-    console.log(event.target.value);
     this.transformStringToDate(this.inputValue);
   }
 
   public transformStringToDate(string: string) {
-    if (string.length === 10) {
+    if (!this.isChecked && string.length === 10) {
       this.selectedDate = new Date(string.split('/').reverse().join('/'));
       this.selectDate(this.selectedDate);
     }
+
     if (this.isChecked && string.length === 23) {
       let start = new Date(string.slice(0, 10).split('/').reverse().join('/'));
       this.selectDate(start);
@@ -168,11 +165,8 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
     const firstDate = startOfMonth(this.visibleDate).getDay();
     this.datesBeforeFirst = [];
     let numberOfdatesBeforeFirst;
-    if (firstDate === 0) {
-      numberOfdatesBeforeFirst = 7;
-    } else {
-      numberOfdatesBeforeFirst = firstDate;
-    }
+    if (firstDate === 0) numberOfdatesBeforeFirst = 7;
+    else numberOfdatesBeforeFirst = firstDate;
 
     for (let i = 1; i < numberOfdatesBeforeFirst; i++) {
       this.datesBeforeFirst.unshift(0);
@@ -190,7 +184,6 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
         start: range.start,
         end: range.end
       });
-      console.log(this.datesWithinInterval);
     }
   }
 }

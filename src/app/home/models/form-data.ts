@@ -9,5 +9,5 @@ export interface FormData {
   selectedTimeSlot: WithName | null;
   email: string | null;
   phone: string | null;
-  selectOption: WithName | null;
+  selectedOption: WithName | null;
 }

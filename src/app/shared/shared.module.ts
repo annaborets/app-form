@@ -9,9 +9,17 @@ import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { SelectObjectComponent } from './components/select-object/select-object.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
+import { RangeDatepickerComponent } from './components/range-datepicker/range-datepicker.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 @NgModule({
-  declarations: [SelectObjectComponent, FilterPipe, DatepickerComponent],
+  declarations: [
+    SelectObjectComponent,
+    FilterPipe,
+    DatepickerComponent,
+    RangeDatepickerComponent,
+    CalendarComponent
+  ],
   imports: [
     CommonModule,
     MatIconModule,
@@ -20,6 +28,10 @@ import { DatepickerComponent } from './components/datepicker/datepicker.componen
     MatInputModule,
     NgxMaskModule.forRoot()
   ],
-  exports: [SelectObjectComponent, DatepickerComponent]
+  exports: [
+    SelectObjectComponent,
+    DatepickerComponent,
+    RangeDatepickerComponent
+  ]
 })
 export class SharedModule {}

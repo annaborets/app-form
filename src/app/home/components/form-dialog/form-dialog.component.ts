@@ -8,9 +8,7 @@ import { WithName } from '../../models/select-data';
 import {
   NameValidation,
   PhoneValidation,
-  EmailValidation,
-  DateValidator,
-  DateRangeValidator
+  EmailValidation
 } from '../../validators/form-validators';
 
 @Component({
@@ -38,8 +36,8 @@ export class FormDialogComponent {
 
   public form = this.formBuilder.group({
     name: ['', [Validators.required, NameValidation]],
-    date: ['', [DateValidator()]],
-    dateRange: [{}, DateRangeValidator()],
+    date: [''],
+    dateRange: [{}],
     isRangedDate: [''],
     selectedTimeSlot: ['', [Validators.required]],
     phone: ['', [Validators.required, PhoneValidation]],

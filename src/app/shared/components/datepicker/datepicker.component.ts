@@ -9,23 +9,6 @@ import {
   startOfDay
 } from 'date-fns';
 
-import { DatepickerObject } from 'src/app/home/models/datepicker-object';
-
-enum MonthList {
-  January = 1,
-  February,
-  March,
-  April,
-  May,
-  June,
-  July,
-  August,
-  September,
-  October,
-  November,
-  December
-}
-
 @Component({
   selector: 'app-datepicker',
   templateUrl: './datepicker.component.html',
@@ -39,10 +22,9 @@ enum MonthList {
   ]
 })
 export class DatepickerComponent implements ControlValueAccessor, OnInit {
-  @Input('isDateRangeChecked') isDateRangeChecked: boolean = false;
   public isOpen = false;
   public datesBeforeFirst: number[] = [];
-  public readonly headers: string[] = [
+  public readonly daysOfWeek: string[] = [
     'Mon',
     'Tue',
     'Wed',
@@ -54,14 +36,7 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   public datesOfCurrentMonth: Date[] = [];
   public currentDate = startOfDay(new Date());
   public selectedDate: Date | null = null;
-  public selectedRange: DatepickerObject = {
-    start: null,
-    end: null
-  };
-  public visibleDate = startOfDay(new Date());
-  public currentYear!: number;
-  public currentMonth!: string;
-  public datesWithinInterval: Date[] = [];
+  public displayedDate = startOfDay(new Date());
   public inputValue: string = '';
 
   private onChange!: Function;
@@ -69,13 +44,10 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit(): void {
     this.setDatesOfMonth();
-    this.setCurrentMonthAndYear();
   }
 
   public writeValue(value: any) {
-    this.isDateRangeChecked
-      ? (this.selectedRange = value)
-      : (this.selectedDate = value);
+    this.selectedDate = value;
   }
 
   public registerOnChange(fn: Function) {
@@ -87,113 +59,47 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
   }
 
   public selectDate(date: Date): void {
-    if (!this.isDateRangeChecked) {
-      this.selectedDate = date;
-      this.isOpen = false;
-      this.onChange(this.selectedDate);
-    }
-
-    if (this.isDateRangeChecked && !this.selectedRange.start) {
-      this.selectedRange.start = date;
-      return;
-    }
-
-    if (
-      this.isDateRangeChecked &&
-      this.selectedRange.start &&
-      !this.selectedRange.end
-    ) {
-      this.selectedRange.end = date;
-      this.selectedDate = null;
-      this.isOpen = false;
-      this.onChange(this.selectedRange);
-      this.setDatesWithinInterval(this.selectedRange);
-      this.onTouch();
-      return;
-    }
-
-    if (
-      this.isDateRangeChecked &&
-      this.selectedRange.start &&
-      this.selectedRange.end
-    ) {
-      this.selectedRange.start = date;
-      this.selectedRange.end = undefined;
-      this.setDatesWithinInterval(this.selectedRange);
-      this.onTouch();
-    }
+    this.selectedDate = date;
+    this.isOpen = false;
+    this.onChange(this.selectedDate);
   }
 
   public previousMonth(): void {
-    this.visibleDate = subMonths(this.visibleDate, 1);
+    this.displayedDate = subMonths(this.displayedDate, 1);
     this.setDatesOfMonth();
-    this.setCurrentMonthAndYear();
   }
 
   public nextMonth(): void {
-    this.visibleDate = addMonths(this.visibleDate, 1);
+    this.displayedDate = addMonths(this.displayedDate, 1);
     this.setDatesOfMonth();
-    this.setCurrentMonthAndYear();
-  }
-
-  public isRangeContainsDate(date: Date): boolean {
-    let stringsWithinInterval = this.datesWithinInterval.map((item) =>
-      item.toString()
-    );
-    return stringsWithinInterval.includes(date.toString());
   }
 
   public onKey(event: any) {
     this.inputValue = event.target.value;
-    this.transformStringToDate(this.inputValue);
+    this.formatStringToDate(this.inputValue);
   }
 
-  public transformStringToDate(string: string) {
-    if (!this.isDateRangeChecked && string.length === 10) {
-      this.selectedDate = new Date(string.split('/').reverse().join('/'));
-      this.selectDate(this.selectedDate);
-    }
+  public formatStringToDate(string: string) {
+    if (string.length !== 10) return;
 
-    if (this.isDateRangeChecked && string.length === 23) {
-      let start = new Date(string.slice(0, 10).split('/').reverse().join('/'));
-      this.selectDate(start);
-      let end = new Date(string.slice(13, 23).split('/').reverse().join('/'));
-      this.selectDate(end);
-    }
+    this.selectedDate = new Date(string.split('/').reverse().join('/'));
+    this.selectDate(this.selectedDate);
   }
 
   private setDatesOfMonth(): void {
     this.datesOfCurrentMonth = eachDayOfInterval({
-      start: startOfMonth(this.visibleDate),
-      end: endOfMonth(this.visibleDate)
+      start: startOfMonth(this.displayedDate),
+      end: endOfMonth(this.displayedDate)
     });
 
-    this.datesOfCurrentMonth.map((item) => {
-      startOfDay(item);
-    });
-
-    const firstDate = startOfMonth(this.visibleDate).getDay();
-    this.datesBeforeFirst = [];
+    const firstDate = startOfMonth(this.displayedDate).getDay();
     let numberOfdatesBeforeFirst;
-    if (firstDate === 0) numberOfdatesBeforeFirst = 7;
-    else numberOfdatesBeforeFirst = firstDate;
-
-    for (let i = 1; i < numberOfdatesBeforeFirst; i++) {
-      this.datesBeforeFirst.unshift(0);
+    if (firstDate === 0) {
+      numberOfdatesBeforeFirst = 6;
+    } else {
+      numberOfdatesBeforeFirst = firstDate - 1;
     }
-  }
 
-  private setCurrentMonthAndYear() {
-    this.currentYear = this.visibleDate.getFullYear();
-    this.currentMonth = MonthList[this.visibleDate.getMonth() + 1];
-  }
-
-  private setDatesWithinInterval(range: DatepickerObject) {
-    if (range.start && range.end) {
-      this.datesWithinInterval = eachDayOfInterval({
-        start: range.start,
-        end: range.end
-      });
-    }
+    this.datesBeforeFirst = Array(numberOfdatesBeforeFirst).fill(0);
   }
 }

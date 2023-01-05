@@ -66,10 +66,17 @@
     border: 1.5px solid #3f51b5;
     color: black;
   }
-  &--chosen {
+  &--range {
     border: none;
-    background-color: #3f51b5;
-    color: white;
+    border-radius: 0%;
+    background-color: rgba(63, 81, 181, 0.2);
+    color: black;
+    box-shadow: -5px 0px 0px 0px rgba(63, 81, 181, 0.2),
+      5px 0px 0px 0px rgba(63, 81, 181, 0.2);
+    border-radius: 0;
+    &:first-child {
+      color: red;
+    }
   }
 }
 

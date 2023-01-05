@@ -1,11 +1,11 @@
 <div class="container">
     <mat-form-field appearance="fill" class="input">
-        <mat-label for="date">Date*</mat-label>
+        <mat-label for="dateRange">Date range*</mat-label>
         <input matInput 
-               id="date" 
-               mask="00/00/0000" 
+               id="dateRange" 
+               mask="00/00/0000 - 00/00/0000" 
                (keyup)="onKey($event)"
-               value="{{selectedDate || '' | date: 'dd/MM/yyyy'}}"/>
+               value="{{selectedRange.start || '' | date: 'dd/MM/yyyy'}} - {{selectedRange.end || '' | date: 'dd/MM/yyyy'}}"/>
         <mat-icon matSuffix 
                   (click)="isOpen = !isOpen"
                   class="icon"  
@@ -13,7 +13,7 @@
                   #trigger="cdkOverlayOrigin">
             date_range
         </mat-icon>
-        <mat-hint>*DD/MM/YYYY</mat-hint>
+        <mat-hint>*DD/MM/YYYY - DD/MM/YYYY</mat-hint>
     </mat-form-field>
     <ng-template cdkConnectedOverlay 
                  [cdkConnectedOverlayOrigin]="trigger" 
@@ -38,8 +38,8 @@
                         *ngFor="let date of datesOfCurrentMonth" 
                         (click)="selectDate(date)"
                         [disabled]="date < currentDate"
-                        [class.day--chosen]="date.toString() === selectedDate?.toString()"
-                        [class.day--current]="date.toString() === currentDate.toString()">
+                        [class.day--current]="date.toString() === currentDate.toString()"
+                        [class.day--range]="isRangeContainsDate(date)">
                     {{date.getDate()}}
                 </button>
             </div>

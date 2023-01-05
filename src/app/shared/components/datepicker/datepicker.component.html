@@ -19,7 +19,8 @@
                  [cdkConnectedOverlayOrigin]="trigger" 
                  [cdkConnectedOverlayOpen]="isOpen"
                  (overlayOutsideClick)="isOpen = false">
-        <div class="datepicker">
+                 <app-calendar (datePickedEvent)="selectDate($event)" [selectedDate]="selectedDate"></app-calendar>
+        <!-- <div class="datepicker">
             <div class="datepicker__header">
                 <button class="datepicker__button" (click)="previousMonth()">
                     <mat-icon>keyboard_arrow_left</mat-icon>
@@ -43,6 +44,6 @@
                     {{date.getDate()}}
                 </button>
             </div>
-        </div>
+        </div> -->
     </ng-template>
 </div>

@@ -1,13 +1,5 @@
-import { Component, forwardRef, OnInit, Input } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import {
-  addMonths,
-  subMonths,
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  startOfDay
-} from 'date-fns';
 
 @Component({
   selector: 'app-datepicker',
@@ -21,30 +13,13 @@ import {
     }
   ]
 })
-export class DatepickerComponent implements ControlValueAccessor, OnInit {
+export class DatepickerComponent implements ControlValueAccessor {
   public isOpen = false;
-  public datesBeforeFirst: number[] = [];
-  public readonly daysOfWeek: string[] = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun'
-  ];
-  public datesOfCurrentMonth: Date[] = [];
-  public currentDate = startOfDay(new Date());
   public selectedDate: Date | null = null;
-  public displayedDate = startOfDay(new Date());
   public inputValue: string = '';
 
   private onChange!: Function;
   private onTouch!: Function;
-
-  ngOnInit(): void {
-    this.setDatesOfMonth();
-  }
 
   public writeValue(value: any) {
     this.selectedDate = value;
@@ -64,16 +39,6 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
     this.onChange(this.selectedDate);
   }
 
-  public previousMonth(): void {
-    this.displayedDate = subMonths(this.displayedDate, 1);
-    this.setDatesOfMonth();
-  }
-
-  public nextMonth(): void {
-    this.displayedDate = addMonths(this.displayedDate, 1);
-    this.setDatesOfMonth();
-  }
-
   public onKey(event: any) {
     this.inputValue = event.target.value;
     this.formatStringToDate(this.inputValue);
@@ -84,22 +49,5 @@ export class DatepickerComponent implements ControlValueAccessor, OnInit {
 
     this.selectedDate = new Date(string.split('/').reverse().join('/'));
     this.selectDate(this.selectedDate);
-  }
-
-  private setDatesOfMonth(): void {
-    this.datesOfCurrentMonth = eachDayOfInterval({
-      start: startOfMonth(this.displayedDate),
-      end: endOfMonth(this.displayedDate)
-    });
-
-    const firstDate = startOfMonth(this.displayedDate).getDay();
-    let numberOfdatesBeforeFirst;
-    if (firstDate === 0) {
-      numberOfdatesBeforeFirst = 6;
-    } else {
-      numberOfdatesBeforeFirst = firstDate - 1;
-    }
-
-    this.datesBeforeFirst = Array(numberOfdatesBeforeFirst).fill(0);
   }
 }

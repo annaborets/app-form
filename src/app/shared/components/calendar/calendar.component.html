@@ -15,10 +15,11 @@
         </button>
         <button class="day" 
                 *ngFor="let date of datesOfCurrentMonth" 
+                (click)="pickDate(date)"
                 [disabled]="date < currentDate"
                 [class.day--chosen]="date.toString() === selectedDate?.toString()"
                 [class.day--current]="date.toString() === currentDate.toString()"
-                [class.day--range]="isRangeContainsDate(date)">
+                [class.day--range]="stringsWithinInterval.includes(date.toString())">
             {{date.getDate()}}
         </button>
     </div>

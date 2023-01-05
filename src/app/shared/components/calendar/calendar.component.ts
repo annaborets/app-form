@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import {
   addMonths,
   subMonths,
@@ -16,6 +16,10 @@ import { DatepickerObject } from 'src/app/home/models/datepicker-object';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit {
+  @Input() selectedDate: Date | null = null;
+  @Input() stringsWithinInterval: string[] = [];
+  @Output() datePickedEvent = new EventEmitter<Date>();
+
   public datesBeforeFirst: number[] = [];
   public readonly daysOfWeek: string[] = [
     'Mon',
@@ -28,18 +32,17 @@ export class CalendarComponent implements OnInit {
   ];
   public datesOfCurrentMonth: Date[] = [];
   public currentDate = startOfDay(new Date());
-  public selectedDate: Date | null = null;
-  public selectedRange: DatepickerObject = {
-    start: null,
-    end: null
-  };
   public displayedDate = startOfDay(new Date());
-  public datesWithinInterval: Date[] = [];
+  // public datesWithinInterval: Date[] = [];
 
   constructor() {}
 
   ngOnInit(): void {
     this.setDatesOfMonth();
+  }
+
+  public pickDate(date: Date): void {
+    this.datePickedEvent.emit(date);
   }
 
   public previousMonth(): void {
@@ -52,12 +55,12 @@ export class CalendarComponent implements OnInit {
     this.setDatesOfMonth();
   }
 
-  public isRangeContainsDate(date: Date): boolean {
-    let stringsWithinInterval = this.datesWithinInterval.map((item) =>
-      item.toString()
-    );
-    return stringsWithinInterval.includes(date.toString());
-  }
+  // public isRangeContainsDate(date: Date): boolean {
+  //   let stringsWithinInterval = this.datesWithinInterval.map((item) =>
+  //     item.toString()
+  //   );
+  //   return stringsWithinInterval.includes(date.toString());
+  // }
 
   private setDatesOfMonth(): void {
     this.datesOfCurrentMonth = eachDayOfInterval({

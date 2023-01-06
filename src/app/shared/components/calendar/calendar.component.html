@@ -1,25 +1,26 @@
-<div class="datepicker">
-    <div class="datepicker__header">
-        <button class="datepicker__button" (click)="previousMonth()">
+<div class="calendar">
+    <div class="calendar__header">
+        <button class="calendar__button" (click)="previousMonth()">
             <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
         <div>{{displayedDate | date: 'MMMM'}} {{displayedDate | date:'YYYY'}}</div>
-        <button class="datepicker__button" (click)="nextMonth()">
+        <button class="calendar__button" (click)="nextMonth()">
             <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
     </div>
     <div class="day-container">
         <div class="header" *ngFor="let day of daysOfWeek">{{day}}</div>
-        <button class="empty" 
-                *ngFor="let date of datesBeforeFirst">
+        <button class="empty" *ngFor="let date of datesBeforeFirst">
         </button>
         <button class="day" 
                 *ngFor="let date of datesOfCurrentMonth" 
                 (click)="pickDate(date)"
-                [disabled]="date < currentDate"
-                [class.day--chosen]="date.toString() === selectedDate?.toString()"
+                [disabled]="date < currentDate" [class.day--chosen]="date.toString() === selectedDate?.toString()"
                 [class.day--current]="date.toString() === currentDate.toString()"
-                [class.day--range]="stringsWithinInterval.includes(date.toString())">
+                [class.day__range]="datesIntervalFormattedToStrings.includes(date.toString())"
+                [class.day__range--first]="datesIntervalFormattedToStrings.indexOf(date.toString()) === 0"
+                [class.day__range--last]="datesIntervalFormattedToStrings.indexOf(date.toString()) === datesIntervalFormattedToStrings.length -1
+                    && datesIntervalFormattedToStrings.length">
             {{date.getDate()}}
         </button>
     </div>

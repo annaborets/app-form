@@ -19,31 +19,8 @@
                  [cdkConnectedOverlayOrigin]="trigger" 
                  [cdkConnectedOverlayOpen]="isOpen"
                  (overlayOutsideClick)="isOpen = false">
-                 <app-calendar (datePickedEvent)="selectDate($event)" [stringsWithinInterval]="stringsWithinInterval"></app-calendar>
-        <!-- <div class="datepicker">
-            <div class="datepicker__header">
-                <button class="datepicker__button" (click)="previousMonth()">
-                    <mat-icon>keyboard_arrow_left</mat-icon>
-                </button>
-                <div>{{displayedDate | date: 'MMMM'}} {{displayedDate | date:'YYYY'}}</div>
-                <button class="datepicker__button" (click)="nextMonth()">
-                    <mat-icon>keyboard_arrow_right</mat-icon>
-                </button>
-            </div>
-            <div class="day-container">
-                <div class="header" *ngFor="let day of daysOfWeek">{{day}}</div>
-                <button class="empty" 
-                        *ngFor="let date of datesBeforeFirst">
-                </button>
-                <button class="day" 
-                        *ngFor="let date of datesOfCurrentMonth" 
-                        (click)="selectDate(date)"
-                        [disabled]="date < currentDate"
-                        [class.day--current]="date.toString() === currentDate.toString()"
-                        [class.day--range]="isRangeContainsDate(date)">
-                    {{date.getDate()}}
-                </button>
-            </div>
-        </div> -->
+        <app-calendar (datePickedEvent)="selectDate($event)" 
+                      [datesIntervalFormattedToStrings]="datesIntervalFormattedToStrings">
+        </app-calendar>
     </ng-template>
 </div>

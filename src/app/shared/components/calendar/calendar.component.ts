@@ -8,8 +8,6 @@ import {
   startOfDay
 } from 'date-fns';
 
-import { DatepickerObject } from 'src/app/home/models/datepicker-object';
-
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -17,7 +15,7 @@ import { DatepickerObject } from 'src/app/home/models/datepicker-object';
 })
 export class CalendarComponent implements OnInit {
   @Input() selectedDate: Date | null = null;
-  @Input() stringsWithinInterval: string[] = [];
+  @Input() datesIntervalFormattedToStrings: string[] = [];
   @Output() datePickedEvent = new EventEmitter<Date>();
 
   public datesBeforeFirst: number[] = [];
@@ -33,9 +31,6 @@ export class CalendarComponent implements OnInit {
   public datesOfCurrentMonth: Date[] = [];
   public currentDate = startOfDay(new Date());
   public displayedDate = startOfDay(new Date());
-  // public datesWithinInterval: Date[] = [];
-
-  constructor() {}
 
   ngOnInit(): void {
     this.setDatesOfMonth();
@@ -55,13 +50,6 @@ export class CalendarComponent implements OnInit {
     this.setDatesOfMonth();
   }
 
-  // public isRangeContainsDate(date: Date): boolean {
-  //   let stringsWithinInterval = this.datesWithinInterval.map((item) =>
-  //     item.toString()
-  //   );
-  //   return stringsWithinInterval.includes(date.toString());
-  // }
-
   private setDatesOfMonth(): void {
     this.datesOfCurrentMonth = eachDayOfInterval({
       start: startOfMonth(this.displayedDate),
@@ -71,11 +59,11 @@ export class CalendarComponent implements OnInit {
     const firstDate = startOfMonth(this.displayedDate).getDay();
     let numberOfdatesBeforeFirst;
     if (firstDate === 0) {
-      numberOfdatesBeforeFirst = 7;
+      numberOfdatesBeforeFirst = 6;
     } else {
-      numberOfdatesBeforeFirst = firstDate;
+      numberOfdatesBeforeFirst = firstDate - 1;
     }
 
-    this.datesBeforeFirst = Array(numberOfdatesBeforeFirst - 1).fill(0);
+    this.datesBeforeFirst = Array(numberOfdatesBeforeFirst).fill(0);
   }
 }

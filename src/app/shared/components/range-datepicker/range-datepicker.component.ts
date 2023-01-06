@@ -18,13 +18,12 @@ import { DatepickerObject } from 'src/app/home/models/datepicker-object';
 })
 export class RangeDatepickerComponent implements ControlValueAccessor {
   public isOpen = false;
-
   public selectedRange: DatepickerObject = {
     start: null,
     end: null
   };
   public datesWithinInterval: Date[] = [];
-  public stringsWithinInterval: string[] = [];
+  public datesIntervalFormattedToStrings: string[] = [];
   public inputValue: string = '';
 
   private onChange!: Function;
@@ -59,17 +58,8 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
 
     if (this.selectedRange.start && this.selectedRange.end) {
       this.selectedRange.start = date;
-      this.selectedRange.end = undefined;
-      this.setDatesWithinInterval(this.selectedRange);
-      this.onTouch();
+      this.selectedRange.end = null;
     }
-  }
-
-  public isRangeContainsDate(date: Date): boolean {
-    let stringsWithinInterval = this.datesWithinInterval.map((item) =>
-      item.toString()
-    );
-    return stringsWithinInterval.includes(date.toString());
   }
 
   public onKey(event: any) {
@@ -80,9 +70,17 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
   public formatStringToDate(string: string) {
     if (string.length !== 23) return;
 
-    let start = new Date(string.slice(0, 10).split('/').reverse().join('/'));
+    let start = new Date(
+      string
+        .replace(/\D+/g, '')
+        .replace(/(\d{2})(\d{2})(\d{4})(\d{2})(\d{2})(\d{4})/, '$3/$2/$1')
+    );
     this.selectDate(start);
-    let end = new Date(string.slice(13, 23).split('/').reverse().join('/'));
+    let end = new Date(
+      string
+        .replace(/\D+/g, '')
+        .replace(/(\d{2})(\d{2})(\d{4})(\d{2})(\d{2})(\d{4})/, '$6/$5/$4')
+    );
     this.selectDate(end);
   }
 
@@ -94,8 +92,8 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
       });
     }
 
-    this.stringsWithinInterval = this.datesWithinInterval.map((item) =>
-      item.toString()
+    this.datesIntervalFormattedToStrings = this.datesWithinInterval.map(
+      (item) => item.toString()
     );
   }
 }

@@ -5,6 +5,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { SelectObjectComponent } from './components/select-object/select-object.component';
 import { FilterPipe } from './pipes/filter.pipe';
@@ -26,7 +28,9 @@ import { CalendarComponent } from './components/calendar/calendar.component';
     OverlayModule,
     MatFormFieldModule,
     MatInputModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     SelectObjectComponent,

@@ -12,11 +12,11 @@
         </mat-hint>
       </mat-form-field>
       <section>
-        <app-datepicker formControlName="date" 
-                        *ngIf="!isDateRangeChecked">
+        <app-datepicker *ngIf="!isDateRangeChecked" 
+                        formControlName="date">
         </app-datepicker>
-        <app-range-datepicker formControlName="dateRange" 
-                              *ngIf="isDateRangeChecked">
+        <app-range-datepicker *ngIf="isDateRangeChecked" 
+                              formControlName="dateRange">
         </app-range-datepicker>
       </section>
       <section>

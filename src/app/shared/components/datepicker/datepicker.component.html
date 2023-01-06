@@ -1,49 +1,26 @@
 <div class="container">
-    <mat-form-field appearance="fill" class="input">
-        <mat-label for="date">Date*</mat-label>
-        <input matInput 
-               id="date" 
-               mask="00/00/0000" 
-               (keyup)="onKey($event)"
-               value="{{selectedDate || '' | date: 'dd/MM/yyyy'}}"/>
-        <mat-icon matSuffix 
-                  (click)="isOpen = !isOpen"
-                  class="icon"  
-                  cdkOverlayOrigin
-                  #trigger="cdkOverlayOrigin">
-            date_range
-        </mat-icon>
-        <mat-hint>*DD/MM/YYYY</mat-hint>
-    </mat-form-field>
+        <mat-form-field appearance="fill" class="input">
+            <mat-label for="date">Date</mat-label>
+            <input matInput 
+                   id="date" 
+                   mask="00/00/0000" 
+                   (keyup)="onKey($event)"
+                   value="{{selectedDate || '' | date: 'dd/MM/yyyy'}}" />
+            <mat-icon matSuffix 
+                      (click)="isOpen = !isOpen" 
+                      class="icon" 
+                      cdkOverlayOrigin 
+                      #trigger="cdkOverlayOrigin">
+                date_range
+            </mat-icon>
+            <mat-hint>*DD/MM/YYYY</mat-hint>
+        </mat-form-field>
     <ng-template cdkConnectedOverlay 
                  [cdkConnectedOverlayOrigin]="trigger" 
                  [cdkConnectedOverlayOpen]="isOpen"
                  (overlayOutsideClick)="isOpen = false">
-                 <app-calendar (datePickedEvent)="selectDate($event)" [selectedDate]="selectedDate"></app-calendar>
-        <!-- <div class="datepicker">
-            <div class="datepicker__header">
-                <button class="datepicker__button" (click)="previousMonth()">
-                    <mat-icon>keyboard_arrow_left</mat-icon>
-                </button>
-                <div>{{displayedDate | date: 'MMMM'}} {{displayedDate | date:'YYYY'}}</div>
-                <button class="datepicker__button" (click)="nextMonth()">
-                    <mat-icon>keyboard_arrow_right</mat-icon>
-                </button>
-            </div>
-            <div class="day-container">
-                <div class="header" *ngFor="let day of daysOfWeek">{{day}}</div>
-                <button class="empty" 
-                        *ngFor="let date of datesBeforeFirst">
-                </button>
-                <button class="day" 
-                        *ngFor="let date of datesOfCurrentMonth" 
-                        (click)="selectDate(date)"
-                        [disabled]="date < currentDate"
-                        [class.day--chosen]="date.toString() === selectedDate?.toString()"
-                        [class.day--current]="date.toString() === currentDate.toString()">
-                    {{date.getDate()}}
-                </button>
-            </div>
-        </div> -->
+        <app-calendar (datePickedEvent)="selectDate($event)" 
+                      [selectedDate]="selectedDate">
+        </app-calendar>
     </ng-template>
 </div>

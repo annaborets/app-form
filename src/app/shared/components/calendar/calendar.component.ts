@@ -18,7 +18,6 @@ export class CalendarComponent implements OnInit {
   @Input() datesIntervalFormattedToStrings: string[] = [];
   @Output() datePickedEvent = new EventEmitter<Date>();
 
-  public datesBeforeFirst: number[] = [];
   public readonly daysOfWeek: string[] = [
     'Mon',
     'Tue',
@@ -28,6 +27,7 @@ export class CalendarComponent implements OnInit {
     'Sat',
     'Sun'
   ];
+  public datesBeforeFirst: number[] = [];
   public datesOfCurrentMonth: Date[] = [];
   public currentDate = startOfDay(new Date());
   public displayedDate = startOfDay(new Date());

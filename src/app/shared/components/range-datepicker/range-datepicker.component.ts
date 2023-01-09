@@ -22,7 +22,6 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
     start: null,
     end: null
   };
-  public datesWithinInterval: Date[] = [];
   public datesIntervalFormattedToStrings: string[] = [];
   public inputValue: string = '';
 
@@ -85,15 +84,16 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
   }
 
   private setDatesWithinInterval(range: DatepickerObject) {
+    let datesWithinInterval: Date[] = [];
     if (range.start && range.end) {
-      this.datesWithinInterval = eachDayOfInterval({
+      datesWithinInterval = eachDayOfInterval({
         start: range.start,
         end: range.end
       });
     }
 
-    this.datesIntervalFormattedToStrings = this.datesWithinInterval.map(
-      (item) => item.toString()
+    this.datesIntervalFormattedToStrings = datesWithinInterval.map((item) =>
+      item.toString()
     );
   }
 }

@@ -50,6 +50,17 @@ export class CalendarComponent implements OnInit {
     this.setDatesOfMonth();
   }
 
+  public checkIfDateFirst(date: Date): boolean {
+    return this.datesIntervalFormattedToStrings.indexOf(date.toString()) === 0;
+  }
+
+  public checkIfDateLast(date: Date): boolean {
+    return (
+      this.datesIntervalFormattedToStrings.indexOf(date.toString()) ===
+      this.datesIntervalFormattedToStrings.length - 1
+    );
+  }
+
   private setDatesOfMonth(): void {
     this.datesOfCurrentMonth = eachDayOfInterval({
       start: startOfMonth(this.displayedDate),

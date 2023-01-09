@@ -63,7 +63,7 @@ export class FormDialogComponent {
     });
   }
 
-  public onCheckboxChange(event: MatCheckboxChange) {
+  public onCheckboxChange(event: MatCheckboxChange): void {
     this.isDateRangeChecked = event.checked;
   }
 }

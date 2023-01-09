@@ -26,26 +26,26 @@ export class SelectObjectComponent implements ControlValueAccessor {
   private onChange!: Function;
   private onTouch!: Function;
 
-  public writeValue(value: WithName) {
+  public writeValue(value: WithName): void {
     this.value = value;
   }
 
-  public registerOnChange(fn: Function) {
+  public registerOnChange(fn: Function): void {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: Function) {
+  public registerOnTouched(fn: Function): void {
     this.onTouch = fn;
   }
 
-  public selectOption(value: WithName) {
+  public selectOption(value: WithName): void {
     this.value = value;
     this.isOptionsShown = false;
     this.onTouch();
     this.onChange(value);
   }
 
-  public onKey(event: KeyboardEvent) {
+  public onKey(event: KeyboardEvent): void {
     this.searchValue = (event.target as HTMLInputElement).value;
   }
 }

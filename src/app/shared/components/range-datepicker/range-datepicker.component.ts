@@ -25,18 +25,19 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
   public datesIntervalFormattedToStrings: string[] = [];
   public inputValue: string = '';
 
+  private filledInputValue = 23;
   private onChange!: Function;
   private onTouch!: Function;
 
-  public writeValue(value: any) {
+  public writeValue(value: any): void {
     this.selectedRange = value;
   }
 
-  public registerOnChange(fn: Function) {
+  public registerOnChange(fn: Function): void {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: Function) {
+  public registerOnTouched(fn: Function): void {
     this.onTouch = fn;
   }
 
@@ -44,9 +45,10 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
     if (!this.selectedRange.start) {
       this.selectedRange.start = date;
       return;
-    }
-
-    if (this.selectedRange.start && !this.selectedRange.end) {
+    } else if (this.selectedRange.end) {
+      this.selectedRange.start = date;
+      this.selectedRange.end = null;
+    } else {
       this.selectedRange.end = date;
       this.isOpen = false;
       this.onChange(this.selectedRange);
@@ -54,20 +56,15 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
       this.onTouch();
       return;
     }
-
-    if (this.selectedRange.start && this.selectedRange.end) {
-      this.selectedRange.start = date;
-      this.selectedRange.end = null;
-    }
   }
 
-  public onKey(event: any) {
+  public onInputValueChange(event: any): void {
     this.inputValue = event.target.value;
-    this.formatStringToDate(this.inputValue);
+    this.formatInputValueToDate(this.inputValue);
   }
 
-  public formatStringToDate(string: string) {
-    if (string.length !== 23) return;
+  public formatInputValueToDate(string: string): void {
+    if (string.length !== this.filledInputValue) return;
 
     let start = new Date(
       string
@@ -83,7 +80,7 @@ export class RangeDatepickerComponent implements ControlValueAccessor {
     this.selectDate(end);
   }
 
-  private setDatesWithinInterval(range: DatepickerObject) {
+  private setDatesWithinInterval(range: DatepickerObject): void {
     let datesWithinInterval: Date[] = [];
     if (range.start && range.end) {
       datesWithinInterval = eachDayOfInterval({

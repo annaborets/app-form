@@ -15,12 +15,12 @@
         <button class="day" 
                 *ngFor="let date of datesOfCurrentMonth" 
                 (click)="pickDate(date)"
-                [disabled]="date < currentDate" [class.day--chosen]="date.toString() === selectedDate?.toString()"
+                [disabled]="date < currentDate" 
+                [class.day--chosen]="date.toString() === selectedDate?.toString()"
                 [class.day--current]="date.toString() === currentDate.toString()"
                 [class.day__range]="datesIntervalFormattedToStrings.includes(date.toString())"
-                [class.day__range--first]="datesIntervalFormattedToStrings.indexOf(date.toString()) === 0"
-                [class.day__range--last]="datesIntervalFormattedToStrings.indexOf(date.toString()) === datesIntervalFormattedToStrings.length -1
-                    && datesIntervalFormattedToStrings.length">
+                [class.day__range--first]="checkIfDateFirst(date)"
+                [class.day__range--last]="checkIfDateLast(date)">
             {{date.getDate()}}
         </button>
     </div>

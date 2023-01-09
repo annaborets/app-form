@@ -4,7 +4,7 @@
         <input matInput 
                id="dateRange" 
                mask="00/00/0000 - 00/00/0000" 
-               (keyup)="onKey($event)"
+               (change)="onInputValueChange($event)"
                value="{{selectedRange.start || '' | date: 'dd/MM/yyyy'}} - {{selectedRange.end || '' | date: 'dd/MM/yyyy'}}"/>
         <mat-icon matSuffix 
                   (click)="isOpen = !isOpen"

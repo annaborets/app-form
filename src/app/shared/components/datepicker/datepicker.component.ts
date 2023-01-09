@@ -18,18 +18,19 @@ export class DatepickerComponent implements ControlValueAccessor {
   public selectedDate: Date | null = null;
   public inputValue: string = '';
 
+  private filledInputValue = 10;
   private onChange!: Function;
   private onTouch!: Function;
 
-  public writeValue(value: Date) {
+  public writeValue(value: Date): void {
     this.selectedDate = value;
   }
 
-  public registerOnChange(fn: Function) {
+  public registerOnChange(fn: Function): void {
     this.onChange = fn;
   }
 
-  public registerOnTouched(fn: Function) {
+  public registerOnTouched(fn: Function): void {
     this.onTouch = fn;
   }
 
@@ -39,13 +40,13 @@ export class DatepickerComponent implements ControlValueAccessor {
     this.onChange(this.selectedDate);
   }
 
-  public onKey(event: any) {
+  public onInputValueChange(event: any): void {
     this.inputValue = event.target.value;
-    this.formatStringToDate(this.inputValue);
+    this.formatInputValueToDate(this.inputValue);
   }
 
-  private formatStringToDate(string: string) {
-    if (string.length !== 10) return;
+  private formatInputValueToDate(string: string): void {
+    if (string.length !== this.filledInputValue) return;
 
     this.selectedDate = new Date(
       string.replace(/\D+/g, '').replace(/(\d{2})(\d{2})(\d{4})/, '$3/$2/$1')
